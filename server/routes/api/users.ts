@@ -2,6 +2,7 @@ import express from "express";
 const router = express.Router();
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 import { User } from "../../models/User";
 // const User = require("../../models/User");
 
@@ -62,6 +63,11 @@ router.post("/login", (req, res) => {
     bcrypt.compare(password, user.password).then((authenticated: boolean) => {
       if (authenticated) {
         res.json({ msg: "Success" });
+        // Sign Token - take in info; expiration
+        const { id, name, avatar } = user;
+        // JWT Payload
+        const payload = { id, name, avatar };
+        jwt.sign(payload, );
       } else {
         return res.status(400).json({ pwd: "Wrong password" });
       }

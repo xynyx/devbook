@@ -7,6 +7,7 @@ var express_1 = __importDefault(require("express"));
 var router = express_1.default.Router();
 var gravatar = require("gravatar");
 var bcrypt = require("bcryptjs");
+var jwt = require("jsonwebtoken");
 var User_1 = require("../../models/User");
 // const User = require("../../models/User");
 /**
@@ -63,6 +64,11 @@ router.post("/login", function (req, res) {
         bcrypt.compare(password, user.password).then(function (authenticated) {
             if (authenticated) {
                 res.json({ msg: "Success" });
+                // Sign Token - take in info; expiration
+                var id = user.id, name_1 = user.name, avatar = user.avatar;
+                // JWT Payload
+                var payload = { id: id, name: name_1, avatar: avatar };
+                jwt.sign(payload);
             }
             else {
                 return res.status(400).json({ pwd: "Wrong password" });

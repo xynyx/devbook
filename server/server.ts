@@ -1,8 +1,9 @@
 import express from "express";
-import mongoose from "mongoose";
+// const dotenv = require("dotenv");
+import * as dotenv from "dotenv";
+dotenv.config();
+const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-// import User from "./models/User";
-
 const users = require("./routes/api/users");
 const profile = require("./routes/api/profile")
 const posts = require("./routes/api/posts")
@@ -12,7 +13,7 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json());
 
-const db = require("./config/keys").mongoURI;
+const db = process.env.MONGO_URI;
 
 mongoose
   .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
