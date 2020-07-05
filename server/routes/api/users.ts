@@ -12,7 +12,7 @@ import { User } from "../../models/User";
 router.get("/test", (req, res) => res.json({ msg: "Users works" }));
 
 /**
- * * GET api/uswers/register
+ * * GET api/users/register
  * ? Register User
  */
 
@@ -32,8 +32,8 @@ router.post("/register", (req, res) => {
         password: req.body.password,
       });
 
-      bcrypt.genSalt(10, (err: any, salt: any) => {
-        bcrypt.hash(newUser.password, salt, (err: any, hash: any) => {
+      bcrypt.genSalt(10, (err: string, salt: number) => {
+        bcrypt.hash(newUser.password, salt, (err: string, hash: string) => {
           if (err) throw err;
           newUser.password = hash;
           newUser
@@ -41,10 +41,31 @@ router.post("/register", (req, res) => {
             .then((user: any) => {
               res.json(user);
             })
-            .catch((err: any) => console.log(err));
+            .catch((err: string) => console.log(err));
         });
       });
     }
+  });
+});
+
+/**
+ * * GET api/users/login
+ * ? Log in User / Return JWT Token
+ */
+router.post("/login", (req, res) => {
+  const { email, password } = req.body;
+
+  User.findOne({ email }).then((user: any) => {
+    if (!user) return res.status(404).json({ email: "User not found" });
+
+    //Check Password
+    bcrypt.compare(password, user.password).then((authenticated: boolean) => {
+      if (authenticated) {
+        res.json({ msg: "Success" });
+      } else {
+        return res.status(400).json({ pwd: "Wrong password" });
+      }
+    });
   });
 });
 

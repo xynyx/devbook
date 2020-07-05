@@ -15,7 +15,7 @@ var User_1 = require("../../models/User");
  */
 router.get("/test", function (req, res) { return res.json({ msg: "Users works" }); });
 /**
- * * GET api/uswers/register
+ * * GET api/users/register
  * ? Register User
  */
 router.post("/register", function (req, res) {
@@ -48,6 +48,26 @@ router.post("/register", function (req, res) {
                 });
             });
         }
+    });
+});
+/**
+ * * GET api/users/login
+ * ? Log in User / Return JWT Token
+ */
+router.post("/login", function (req, res) {
+    var _a = req.body, email = _a.email, password = _a.password;
+    User_1.User.findOne({ email: email }).then(function (user) {
+        if (!user)
+            return res.status(404).json({ email: "User not found" });
+        //Check Password
+        bcrypt.compare(password, user.password).then(function (authenticated) {
+            if (authenticated) {
+                res.json({ msg: "Success" });
+            }
+            else {
+                return res.status(400).json({ pwd: "Wrong password" });
+            }
+        });
     });
 });
 module.exports = router;
