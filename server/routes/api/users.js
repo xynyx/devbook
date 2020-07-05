@@ -8,6 +8,7 @@ var router = express_1.default.Router();
 var gravatar = require("gravatar");
 var bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
+var passport = require("passport");
 var User_1 = require("../../models/User");
 // const User = require("../../models/User");
 /**
@@ -63,12 +64,12 @@ router.post("/login", function (req, res) {
         //Check Password
         bcrypt.compare(password, user.password).then(function (authenticated) {
             if (authenticated) {
-                // res.json({ msg: "Success" });
                 // Sign Token - take in info; expiration
                 var id = user.id, name_1 = user.name, avatar = user.avatar;
                 // JWT Payload
                 var payload = { id: id, name: name_1, avatar: avatar };
                 jwt.sign(payload, process.env.SECRET, { expiresIn: "1h" }, function (err, token) {
+                    // Token is then later sent as a header to validate user
                     res.json({ success: true, token: "Bearer " + token });
                 });
             }
@@ -77,5 +78,13 @@ router.post("/login", function (req, res) {
             }
         });
     });
+});
+/**
+ * * GET api/users/current
+ * ? Return Current User
+ * ! PRIVATE
+ */
+router.get("/current", passport.authenticate("jwt", { session: false }), function (req, res) {
+    res.json({ msg: "success" });
 });
 module.exports = router;

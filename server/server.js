@@ -31,6 +31,7 @@ var bodyParser = require("body-parser");
 var users = require("./routes/api/users");
 var profile = require("./routes/api/profile");
 var posts = require("./routes/api/posts");
+var passport = require("passport");
 var app = express_1.default();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -39,7 +40,10 @@ mongoose
     .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(function () { return console.log("connected"); })
     .catch(function (err) { return console.log(err); });
-app.get("/", function (req, res) { return res.send("Hello"); });
+// Init passport middleware
+app.use(passport.initialize());
+// Passport config
+require("./config/passport")(passport);
 app.use("/api/users", users);
 app.use("/api/profile", profile);
 app.use("/api/posts", posts);
