@@ -85,6 +85,6 @@ router.post("/login", function (req, res) {
  * ! PRIVATE
  */
 router.get("/current", passport.authenticate("jwt", { session: false }), function (req, res) {
-    res.json({ msg: "success" });
+    res.json(req.user);
 });
 module.exports = router;

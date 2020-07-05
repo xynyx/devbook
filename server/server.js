@@ -42,7 +42,7 @@ mongoose
     .catch(function (err) { return console.log(err); });
 // Init passport middleware
 app.use(passport.initialize());
-// Passport config
+// Passport config - pass in passport as parameter
 require("./config/passport")(passport);
 app.use("/api/users", users);
 app.use("/api/profile", profile);
