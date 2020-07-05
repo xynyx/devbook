@@ -63,12 +63,14 @@ router.post("/login", function (req, res) {
         //Check Password
         bcrypt.compare(password, user.password).then(function (authenticated) {
             if (authenticated) {
-                res.json({ msg: "Success" });
+                // res.json({ msg: "Success" });
                 // Sign Token - take in info; expiration
                 var id = user.id, name_1 = user.name, avatar = user.avatar;
                 // JWT Payload
                 var payload = { id: id, name: name_1, avatar: avatar };
-                jwt.sign(payload);
+                jwt.sign(payload, process.env.SECRET, { expiresIn: "1h" }, function (err, token) {
+                    res.json({ success: true, token: "Bearer " + token });
+                });
             }
             else {
                 return res.status(400).json({ pwd: "Wrong password" });

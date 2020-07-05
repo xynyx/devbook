@@ -62,12 +62,19 @@ router.post("/login", (req, res) => {
     //Check Password
     bcrypt.compare(password, user.password).then((authenticated: boolean) => {
       if (authenticated) {
-        res.json({ msg: "Success" });
         // Sign Token - take in info; expiration
         const { id, name, avatar } = user;
         // JWT Payload
         const payload = { id, name, avatar };
-        jwt.sign(payload, );
+        jwt.sign(
+          payload,
+          process.env.SECRET,
+          { expiresIn: "1h" },
+          (err: string, token: string) => {
+            // Token is then later sent as a header to validate user
+            res.json({ success: true, token: "Bearer " + token });
+          }
+        );
       } else {
         return res.status(400).json({ pwd: "Wrong password" });
       }

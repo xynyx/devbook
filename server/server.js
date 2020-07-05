@@ -35,7 +35,6 @@ var app = express_1.default();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 var db = process.env.MONGO_URI;
-console.log(db);
 mongoose
     .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(function () { return console.log("connected"); })
