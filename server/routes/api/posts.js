@@ -6,5 +6,10 @@ const router = express.Router();
 //   return router;
 // };
 
+/**
+ * * GET api/posts/test
+ * ? Tests POST route
+ */
 router.get("/test", (req, res) => res.json({ msg: "Posts works" }));
+
 module.exports = router;
