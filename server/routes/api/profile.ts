@@ -37,7 +37,7 @@ router.get(
 
 /**
  * * POST api/profile
- * ? Create new profile
+ * ? Create/edit profile
  * ! PRIVATE
  * Using JWT allows us not to have specify user Id (eg. api/profile/:id) -> receives JWT payload with user information instead
  */
@@ -63,11 +63,7 @@ router.post(
     // Convert comma separated values into array
     userInfo.skills.split(",");
     for (const property in userInfo) {
-      if (
-        property === "experience" ||
-        property === "education" ||
-        property === "social"
-      ) {
+      if (property === "social") {
         for (const innerProperty in userInfo[property]) {
           if (!userInfo[innerProperty]) {
             delete userInfo[innerProperty];
@@ -78,6 +74,31 @@ router.post(
         delete userInfo[property];
       }
     }
+
+    Profile.findOne({ user: userInfo.user.id }).then((profile: any) => {
+      // Update profile
+      if (profile) {
+        Profile.findOneAndUpdate(
+          { user: req.user.id },
+          { $set: userInfo },
+          { new: true }
+        ).then((profile: any) => res.json(profile));
+      } else {
+        // Create profile
+        // Does 'handle' exist
+        Profile.findOne({ handle: userInfo.handle }).then((handle: any) => {
+          if (handle) {
+            return res
+              .status(400)
+              .json({ exists: "That handle already exists." });
+          } else {
+            new Profile(userInfo)
+              .save()
+              .then((profile: any) => res.json(profile));
+          }
+        });
+      }
+    });
 
     //exp, edu, soc
     console.log("userInfo", userInfo);
