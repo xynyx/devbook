@@ -113,3 +113,4 @@ var ProfileSchema = new Schema({
     },
 });
 exports.Profile = mongoose.model("profile", ProfileSchema);
+//# sourceMappingURL=Profile.js.map

@@ -88,3 +88,4 @@ router.get("/current", passport.authenticate("jwt", { session: false }), functio
     res.json(req.user);
 });
 module.exports = router;
+//# sourceMappingURL=users.js.map

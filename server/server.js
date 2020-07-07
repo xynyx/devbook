@@ -37,3 +37,4 @@ app.use("/api/profile", profile);
 app.use("/api/posts", posts);
 var PORT = process.env.PORT || 5000;
 app.listen(PORT, function () { return console.log("Server running on port " + PORT); });
+//# sourceMappingURL=server.js.map

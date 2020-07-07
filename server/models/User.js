@@ -24,3 +24,4 @@ var UserSchema = new Schema({
     },
 });
 exports.User = mongoose.model("users", UserSchema);
+//# sourceMappingURL=User.js.map

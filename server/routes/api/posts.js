@@ -16,3 +16,4 @@ var router = express_1.default.Router();
  */
 router.get("/test", function (req, res) { return res.json({ msg: "Posts works" }); });
 module.exports = router;
+//# sourceMappingURL=posts.js.map
