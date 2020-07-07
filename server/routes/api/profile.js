@@ -7,6 +7,7 @@ var express_1 = __importDefault(require("express"));
 var router = express_1.default.Router();
 var passport = require("passport");
 var Profile_1 = require("../../models/Profile");
+var profile_1 = __importDefault(require("../../validation/profile"));
 // Load Profile Model
 // const Profile = require("../../models/Profile");
 // const User = require("../../models/User");
@@ -33,11 +34,16 @@ router.get("/", passport.authenticate("jwt", { session: false }), function (req,
 });
 /**
  * * POST api/profile
- * ? Create new profile
+ * ? Create/edit profile
  * ! PRIVATE
  * Using JWT allows us not to have specify user Id (eg. api/profile/:id) -> receives JWT payload with user information instead
  */
 router.post("/", passport.authenticate("jwt", { session: false }), function (req, res) {
+    var _a = profile_1.default(req.body), errors = _a.errors, isValid = _a.isValid;
+    // Check valid
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
     // const profileFields = {};
     // const {
     //   handle,
@@ -51,14 +57,45 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
     //   githubUsername,
     // } = req.body;
     var userInfo = req.body;
-    console.log('userInfo BEFORE', userInfo);
+    console.log("userInfo BEFORE", userInfo);
+    // Convert comma separated values into array
+    userInfo.skills.split(",");
     for (var property in userInfo) {
+        if (property === "social") {
+            for (var innerProperty in userInfo[property]) {
+                if (!userInfo[innerProperty]) {
+                    delete userInfo[innerProperty];
+                }
+            }
+        }
         if (!userInfo[property]) {
             delete userInfo[property];
         }
     }
-    console.log('userInfo', userInfo);
-    debugger;
+    Profile_1.Profile.findOne({ user: userInfo.user.id }).then(function (profile) {
+        // Update profile
+        if (profile) {
+            Profile_1.Profile.findOneAndUpdate({ user: req.user.id }, { $set: userInfo }, { new: true }).then(function (profile) { return res.json(profile); });
+        }
+        else {
+            // Create profile
+            // Does 'handle' exist
+            Profile_1.Profile.findOne({ handle: userInfo.handle }).then(function (handle) {
+                if (handle) {
+                    return res
+                        .status(400)
+                        .json({ exists: "That handle already exists." });
+                }
+                else {
+                    new Profile_1.Profile(userInfo)
+                        .save()
+                        .then(function (profile) { return res.json(profile); });
+                }
+            });
+        }
+    });
+    //exp, edu, soc
+    console.log("userInfo", userInfo);
     // profileFields.user = req.user.id
     // .catch((err: any) => res.status(404).json(err));
 });

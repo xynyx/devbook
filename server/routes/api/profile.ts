@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 import { User } from "../../models/User";
 import { Profile } from "../../models/Profile";
+import validateProfileInput from "../../validation/profile";
 
 // Load Profile Model
 // const Profile = require("../../models/Profile");
@@ -45,6 +46,12 @@ router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req: any, res: any) => {
+    const { errors, isValid } = validateProfileInput(req.body);
+
+    // Check valid
+    if (!isValid) {
+      return res.status(400).json(errors)
+    }
     // const profileFields = {};
     // const {
     //   handle,
@@ -102,7 +109,6 @@ router.post(
 
     //exp, edu, soc
     console.log("userInfo", userInfo);
-    debugger;
     // profileFields.user = req.user.id
     // .catch((err: any) => res.status(404).json(err));
   }

@@ -1,11 +1,22 @@
 const Validator = require("validator");
 
-module.exports = function validateProfileInput(data: any) {
+export default function validateProfileInput(data: any) {
   let errors: any = {};
+  console.log(data);
 
-  data.handle = !data.handle ? data.handle : "";
-  data.status = !data.status ? data.status : "";
-  data.skills = data.skills.length !== 0 ? data.skills : "";
+  data.handle ? data.handle : (data.handle = "");
+  data.status ? data.status : (data.status = "");
+  data.skills
+    ? data.skills.length > 0
+      ? data.skills
+      : (data.skills = "")
+    : (data.skills = "");
+
+  console.log("AFTER", data);
+
+  // data.handle = !data.handle ? data.handle : "";
+  // data.status = !data.status ? data.status : "";
+  // data.skills = data.skills.length !== 0 ? data.skills : "";
 
   if (!Validator.isLength(data.handle, { min: 2, max: 30 })) {
     errors.handle = "Needs to be between 2 and 30 characters.";
@@ -17,6 +28,10 @@ module.exports = function validateProfileInput(data: any) {
 
   if (Validator.isEmpty(data.skills)) {
     errors.skills = "At least one skill is required.";
+  }
+
+  if (Validator.isEmpty(data.status)) {
+    errors.skills = "Status is required.";
   }
 
   if (data.website) {
@@ -44,4 +59,4 @@ module.exports = function validateProfileInput(data: any) {
   }
 
   return { errors, isValid: Object.keys(errors).length === 0 };
-};
+}
