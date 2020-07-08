@@ -199,29 +199,30 @@ router.post(
 );
 
 /**
- * * POST api/profile/education
- * ? Add education to profile
+ * * DELETE api/profile/education/:edu_id
+ * ? Delete education in profile
  * ! PRIVATE
  */
-router.post(
-  "/education",
+router.delete(
+  "/education/:edu_id",
   passport.authenticate("jwt", { session: false }),
   (req: any, res) => {
-    Profile.findOne({ user: req.user.id }).then((profile: any) => {
-      console.log("req.body", req.body);
+    Profile.findOne({ user: req.user.id })
+      .then((profile: any) => {
+        const indexOfExperience = profile.education
+          .map((exp: any) => exp.id)
+          .indexOf(req.params.edu_id);
+        // Remove education
+        if (indexOfExperience === -1)
+          return res.status(404).json("This experience no longer exists.");
+        profile.education.splice(indexOfExperience, 1);
 
-      const { errors, isValid } = validateEducationInput(req.body);
-
-      // Check valid
-      if (!isValid) {
-        return res.status(400).json(errors);
-      }
-
-      profile.education.unshift(req.body);
-      profile.save().then((profile: any) => {
-        res.json(profile);
-      });
-    });
+        profile
+          .save()
+          .then((profile: any) => res.json(profile))
+          .catch((err: any) => res.status(400).json(err));
+      })
+      .catch((err: any) => res.status(404).json(err));
   }
 );
 
