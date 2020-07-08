@@ -74,7 +74,7 @@ router.get("/handle/:handle", (req, res) => {
  * * GET api/profile/all
  * ? Find all profiles
  */
- router.get("/all", (req, res) => {
+router.get("/all", (req, res) => {
   Profile.find()
     .populate("user", ["name", "avatar"])
     .then((profiles: any) => {
@@ -169,4 +169,36 @@ router.post(
   }
 );
 
+/**
+ * * POST api/profile/experience
+ * ? Add experience to profile
+ * ! PRIVATE
+ */
+
+router.post(
+  "/experience",
+  passport.authenticate("jwt", { session: false }),
+  (req: any, res) => {
+    Profile.findOne({ user: req.user.id }).then((profile: any) => {
+      console.log("req.body", req.body);
+      const {
+        title,
+        company,
+        location,
+        from,
+        to,
+        current,
+        description,
+      } = req.body;
+      // const newExp = {};
+
+      profile.experience
+        .unshift(req.body)
+        .save()
+        .then((profile: any) => {
+          res.json(profile);
+        });
+    });
+  }
+);
 module.exports = router;

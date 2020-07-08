@@ -152,5 +152,18 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
     // profileFields.user = req.user.id
     // .catch((err: any) => res.status(404).json(err));
 });
+/**
+ * * POST api/profile/experience
+ * ? Add experience to profile
+ * ! PRIVATE
+ */
+router.post("/experience", passport.authenticate("jwt", { session: false }), function (req, res) {
+    Profile_1.Profile.findOne({ user: req.user.id }).then(function (profile) {
+        console.log("req.body", req.body);
+        var _a = req.body, title = _a.title, company = _a.company, location = _a.location, from = _a.from, to = _a.to, current = _a.current, description = _a.description;
+        // const newExp = {};
+        // profile.experience.unshift(req.body)
+    });
+});
 module.exports = router;
 //# sourceMappingURL=profile.js.map
