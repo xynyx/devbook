@@ -192,5 +192,49 @@ router.post("/education", passport.authenticate("jwt", { session: false }), func
         });
     });
 });
+/**
+ * * DELETE api/profile/education
+ * ? Add education to profile
+ * ! PRIVATE
+ */
+router.post("/education", passport.authenticate("jwt", { session: false }), function (req, res) {
+    Profile_1.Profile.findOne({ user: req.user.id }).then(function (profile) {
+        console.log("req.body", req.body);
+        var _a = education_1.default(req.body), errors = _a.errors, isValid = _a.isValid;
+        // Check valid
+        if (!isValid) {
+            return res.status(400).json(errors);
+        }
+        profile.education.unshift(req.body);
+        profile.save().then(function (profile) {
+            res.json(profile);
+        });
+    });
+});
+/**
+ * * DELETE api/profile/experience/:exp_id
+ * ? Delete experience in profile
+ * ! PRIVATE
+ */
+router.delete("/experience/:exp_id", passport.authenticate("jwt", { session: false }), function (req, res) {
+    Profile_1.Profile.findOne({ user: req.user.id }).then(function (profile) {
+        console.log('req.params.exp_id', req.params.exp_id);
+        console.log("PROFILE", profile.experience);
+        var indexOfExperience = profile.experience
+            .map(function (exp) { return exp.id; })
+            .indexOf(req.params.exp_id);
+        // Remove experience
+        console.log('indexOfExperience', indexOfExperience);
+        if (indexOfExperience === -1)
+            return res.status(404).json("This experience no longer exists.");
+        profile.experience.splice(indexOfExperience, 1);
+        console.log("profile.experience", profile.experience);
+        profile
+            .save()
+            .then(function (profile) { return res.json(profile); })
+            .catch(function (err) { return res.status(400).json(err); });
+    })
+        .catch(function (err) { return res.status(404).json(err); });
+});
 module.exports = router;
 //# sourceMappingURL=profile.js.map

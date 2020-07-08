@@ -203,7 +203,7 @@ router.post(
  * ? Add education to profile
  * ! PRIVATE
  */
- router.post(
+router.post(
   "/education",
   passport.authenticate("jwt", { session: false }),
   (req: any, res) => {
@@ -224,4 +224,65 @@ router.post(
     });
   }
 );
+
+/**
+ * * DELETE api/profile/education
+ * ? Add education to profile
+ * ! PRIVATE
+ */
+router.post(
+  "/education",
+  passport.authenticate("jwt", { session: false }),
+  (req: any, res) => {
+    Profile.findOne({ user: req.user.id }).then((profile: any) => {
+      console.log("req.body", req.body);
+
+      const { errors, isValid } = validateEducationInput(req.body);
+
+      // Check valid
+      if (!isValid) {
+        return res.status(400).json(errors);
+      }
+
+      profile.education.unshift(req.body);
+      profile.save().then((profile: any) => {
+        res.json(profile);
+      });
+    });
+  }
+);
+
+/**
+ * * DELETE api/profile/experience/:exp_id
+ * ? Delete experience in profile
+ * ! PRIVATE
+ */
+router.delete(
+  "/experience/:exp_id",
+  passport.authenticate("jwt", { session: false }),
+  (req: any, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then((profile: any) => {
+        console.log("req.params.exp_id", req.params.exp_id);
+        console.log("PROFILE", profile.experience);
+        const indexOfExperience = profile.experience
+          .map((exp: any) => exp.id)
+          .indexOf(req.params.exp_id);
+        // Remove experience
+        console.log("indexOfExperience", indexOfExperience);
+        if (indexOfExperience === -1)
+          return res.status(404).json("This experience no longer exists.");
+        profile.experience.splice(indexOfExperience, 1);
+
+        console.log("profile.experience", profile.experience);
+
+        profile
+          .save()
+          .then((profile: any) => res.json(profile))
+          .catch((err: any) => res.status(400).json(err));
+      })
+      .catch((err: any) => res.status(404).json(err));
+  }
+);
+
 module.exports = router;

@@ -20,13 +20,18 @@ var users = require("./routes/api/users");
 var profile = require("./routes/api/profile");
 var posts = require("./routes/api/posts");
 var passport = require("passport");
-mongoose.set('useFindAndModify', false);
+var methodOverride = require("method-override");
 var app = express_1.default();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(methodOverride("X-HTTP-Method-Override"));
 var db = process.env.MONGO_URI;
 mongoose
-    .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+    .connect(db, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+})
     .then(function () { return console.log("connected"); })
     .catch(function (err) { return console.log(err); });
 // Init passport middleware

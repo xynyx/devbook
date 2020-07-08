@@ -5,20 +5,26 @@ dotenv.config();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const users = require("./routes/api/users");
-const profile = require("./routes/api/profile")
-const posts = require("./routes/api/posts")
+const profile = require("./routes/api/profile");
+const posts = require("./routes/api/posts");
 const passport = require("passport");
-mongoose.set('useFindAndModify', false);
+const methodOverride = require("method-override");
 
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(methodOverride("X-HTTP-Method-Override"));
 
 const db = process.env.MONGO_URI;
 
 mongoose
-  .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(db, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
   .then(() => console.log("connected"))
   .catch((err: any) => console.log(err));
 
@@ -26,12 +32,11 @@ mongoose
 app.use(passport.initialize());
 
 // Passport config - pass in passport as parameter
-require("./config/passport")(passport)
+require("./config/passport")(passport);
 
-app.use("/api/users", users)
-app.use("/api/profile", profile)
-app.use("/api/posts", posts)
-
+app.use("/api/users", users);
+app.use("/api/profile", profile);
+app.use("/api/posts", posts);
 
 const PORT = process.env.PORT || 5000;
 
