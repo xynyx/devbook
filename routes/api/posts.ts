@@ -1,16 +1,10 @@
-// const express = require("express");
 import express from "express";
-const mongoose = require("mongoose");
 const passport = require("passport");
 const router = express.Router();
 
 import { Post } from "../../models/Posts";
+import { Profile } from "../../models/Profile";
 import validatePostInput from "../../validation/post";
-
-// module.exports = (db) => {
-//   router.get("/test", (req, res) => res.json({ msg: "Posts works" }));
-//   return router;
-// };
 
 /**
  * * GET api/posts/test
@@ -26,7 +20,7 @@ router.get("/", (req, res) => {
   Post.find()
     .sort({ date: -1 })
     .then((posts: Object[]) => res.json(posts))
-    .catch((err: any) => res.status(404).json(err));
+    .catch((err: any) => res.status(404).json("No posts found."));
 });
 
 /**
@@ -36,7 +30,7 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
   Post.findById(req.params.id)
     .then((post: any) => res.json(post))
-    .catch((err: any) => res.status(404).json(err));
+    .catch((err: any) => res.status(404).json("No post found."));
 });
 
 /**
@@ -47,17 +41,48 @@ router.get("/:id", (req, res) => {
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {
+  (req: any, res) => {
     const { errors, isValid } = validatePostInput(req.body);
     if (!isValid) return res.status(400).json(errors);
+    console.log("req.body", req.body);
 
-    const { text, name, avatar, user } = req.body;
-    const newPost = new Post({ text, name, avatar, user });
+    const { text, name } = req.body;
+
+    const newPost = new Post({
+      text,
+      name,
+      avatar: req.user.avatar,
+      user: req.user.id,
+    });
 
     newPost
       .save()
       .then((post: any) => res.json(post))
       .catch((err: any) => res.status(404).json(err));
+  }
+);
+
+/**
+ * * DELETE api/posts/:id
+ * ? Delete post
+ * ! PRIVATE
+ */
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req: any, res) => {
+    Profile.findOne({ user: req.user.id }).then((profile: any) => {
+      if (!profile) res.status(400).json("You have no profile!");
+      Post.findById(req.params.id)
+        .then((post: any) => {
+          console.log("post", post);
+          if (post.user.toString() !== req.user.id) {
+            return res.status(401).json("User not authorized.");
+          }
+          post.remove().then(() => res.json("Successfully deleted."));
+        })
+        .then((err: any) => res.status(404).json("Post not found"));
+    });
   }
 );
 
