@@ -11,6 +11,7 @@ var Profile_1 = require("../../models/Profile");
 var profile_1 = __importDefault(require("../../validation/profile"));
 var experience_1 = __importDefault(require("../../validation/experience"));
 var education_1 = __importDefault(require("../../validation/education"));
+// TODO: Stronger typing with TypeScript for profile data
 /**
  * * GET api/profile/test
  * ? Tests POST route

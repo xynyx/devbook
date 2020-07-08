@@ -20,6 +20,25 @@ var post_1 = __importDefault(require("../../validation/post"));
  */
 router.get("/test", function (req, res) { return res.json({ msg: "Posts works" }); });
 /**
+ * * GET api/posts
+ * ? Get posts
+ */
+router.get("/", function (req, res) {
+    Posts_1.Post.find()
+        .sort({ date: -1 })
+        .then(function (posts) { return res.json(posts); })
+        .catch(function (err) { return res.status(404).json(err); });
+});
+/**
+ * * GET api/posts/:id
+ * ? Get posts by id
+ */
+router.get("/:id", function (req, res) {
+    Posts_1.Post.findById(req.params.id)
+        .then(function (post) { return res.json(post); })
+        .catch(function (err) { return res.status(404).json(err); });
+});
+/**
  * * POST api/posts
  * ? Create post
  * ! PRIVATE
@@ -28,7 +47,6 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
     var _a = post_1.default(req.body), errors = _a.errors, isValid = _a.isValid;
     if (!isValid)
         return res.status(400).json(errors);
-    console.log("req.body", req.body);
     var _b = req.body, text = _b.text, name = _b.name, avatar = _b.avatar, user = _b.user;
     var newPost = new Posts_1.Post({ text: text, name: name, avatar: avatar, user: user });
     newPost

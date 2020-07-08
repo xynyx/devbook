@@ -7,6 +7,8 @@ import validateProfileInput from "../../validation/profile";
 import validateExperienceInput from "../../validation/experience";
 import validateEducationInput from "../../validation/education";
 
+// TODO: Stronger typing with TypeScript for profile data
+
 /**
  * * GET api/profile/test
  * ? Tests POST route
