@@ -68,7 +68,7 @@ router.post("/login", function (req, res) {
                 var id = user.id, name_1 = user.name, avatar = user.avatar;
                 // JWT Payload
                 var payload = { id: id, name: name_1, avatar: avatar };
-                jwt.sign(payload, process.env.SECRET, { expiresIn: "1h" }, function (err, token) {
+                jwt.sign(payload, process.env.SECRET, { expiresIn: "4h" }, function (err, token) {
                     // Token is then later sent as a header to validate user
                     res.json({ success: true, token: "Bearer " + token });
                 });

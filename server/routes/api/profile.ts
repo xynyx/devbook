@@ -39,6 +39,38 @@ router.get(
 );
 
 /**
+ * * GET api/profile/user/:user_id
+ * ? Find profile by user ID
+ */
+router.get("/user/:user_id", (req, res) => {
+  Profile.findOne({ user: req.params.user_id })
+    .populate("user", ["name", "avatar"])
+    .then((profile: any) => {
+      if (!profile) {
+        res.status(404).json("This user does not have a profile.");
+      }
+      res.json(profile);
+    })
+    .catch((err: any) => res.status(404).json(err));
+});
+
+/**
+ * * GET api/profile/handle/:handle
+ * ? Find profile by handle
+ */
+router.get("/handle/:handle", (req, res) => {
+  Profile.findOne({ handle: req.params.handle })
+    .populate("user", ["name", "avatar"])
+    .then((profile: any) => {
+      if (!profile) {
+        res.status(404).json("This user does not have a profile.");
+      }
+      res.json(profile);
+    })
+    .catch((err: any) => res.status(404).json(err));
+});
+
+/**
  * * POST api/profile
  * ? Create/edit profile
  * ! PRIVATE
@@ -62,6 +94,7 @@ router.post(
     //! This may need fixing
     userInfo.skills = userInfo.skills.split(",");
     for (const property in userInfo) {
+      // Skip user key as that information is always required
       if (property === "user") continue;
       // If property is a social network, must build social key and add the property to social
       if (

@@ -35,6 +35,36 @@ router.get("/", passport.authenticate("jwt", { session: false }), function (req,
         .catch(function (err) { return res.status(404).json(err); });
 });
 /**
+ * * GET api/profile/user/:user_id
+ * ? Find profile by user ID
+ */
+router.get("/user/:user_id", function (req, res) {
+    Profile_1.Profile.findOne({ user: req.params.user_id })
+        .populate("user", ["name", "avatar"])
+        .then(function (profile) {
+        if (!profile) {
+            res.status(404).json("This user does not have a profile.");
+        }
+        res.json(profile);
+    })
+        .catch(function (err) { return res.status(404).json(err); });
+});
+/**
+ * * GET api/profile/handle/:handle
+ * ? Find profile by handle
+ */
+router.get("/handle/:handle", function (req, res) {
+    Profile_1.Profile.findOne({ handle: req.params.handle })
+        .populate("user", ["name", "avatar"])
+        .then(function (profile) {
+        if (!profile) {
+            res.status(404).json("This user does not have a profile.");
+        }
+        res.json(profile);
+    })
+        .catch(function (err) { return res.status(404).json(err); });
+});
+/**
  * * POST api/profile
  * ? Create/edit profile
  * ! PRIVATE
@@ -54,6 +84,7 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
     //! This may need fixing
     userInfo.skills = userInfo.skills.split(",");
     for (var property in userInfo) {
+        // Skip user key as that information is always required
         if (property === "user")
             continue;
         // If property is a social network, must build social key and add the property to social

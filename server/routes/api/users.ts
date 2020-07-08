@@ -70,7 +70,7 @@ router.post("/login", (req, res) => {
         jwt.sign(
           payload,
           process.env.SECRET,
-          { expiresIn: "1h" },
+          { expiresIn: "4h" },
           (err: string, token: string) => {
             // Token is then later sent as a header to validate user
             res.json({ success: true, token: "Bearer " + token });
