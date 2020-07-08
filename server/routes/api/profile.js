@@ -8,6 +8,7 @@ var router = express_1.default.Router();
 var passport = require("passport");
 var Profile_1 = require("../../models/Profile");
 var profile_1 = __importDefault(require("../../validation/profile"));
+var experience_1 = __importDefault(require("../../validation/experience"));
 // Load Profile Model
 // const Profile = require("../../models/Profile");
 // const User = require("../../models/User");
@@ -160,9 +161,17 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
 router.post("/experience", passport.authenticate("jwt", { session: false }), function (req, res) {
     Profile_1.Profile.findOne({ user: req.user.id }).then(function (profile) {
         console.log("req.body", req.body);
-        var _a = req.body, title = _a.title, company = _a.company, location = _a.location, from = _a.from, to = _a.to, current = _a.current, description = _a.description;
+        var _a = experience_1.default(req.body), errors = _a.errors, isValid = _a.isValid;
+        // Check valid
+        if (!isValid) {
+            return res.status(400).json(errors);
+        }
+        var _b = req.body, title = _b.title, company = _b.company, location = _b.location, from = _b.from, to = _b.to, current = _b.current, description = _b.description;
         // const newExp = {};
-        // profile.experience.unshift(req.body)
+        profile.experience.unshift(req.body);
+        profile.save().then(function (profile) {
+            res.json(profile);
+        });
     });
 });
 module.exports = router;

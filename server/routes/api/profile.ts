@@ -4,6 +4,7 @@ const passport = require("passport");
 import { User } from "../../models/User";
 import { Profile } from "../../models/Profile";
 import validateProfileInput from "../../validation/profile";
+import validateExperienceInput from "../../validation/experience";
 
 // Load Profile Model
 // const Profile = require("../../models/Profile");
@@ -181,6 +182,13 @@ router.post(
   (req: any, res) => {
     Profile.findOne({ user: req.user.id }).then((profile: any) => {
       console.log("req.body", req.body);
+
+      const { errors, isValid } = validateExperienceInput(req.body);
+
+      // Check valid
+      if (!isValid) {
+        return res.status(400).json(errors);
+      }
       const {
         title,
         company,
@@ -192,12 +200,10 @@ router.post(
       } = req.body;
       // const newExp = {};
 
-      profile.experience
-        .unshift(req.body)
-        .save()
-        .then((profile: any) => {
-          res.json(profile);
-        });
+      profile.experience.unshift(req.body);
+      profile.save().then((profile: any) => {
+        res.json(profile);
+      });
     });
   }
 );

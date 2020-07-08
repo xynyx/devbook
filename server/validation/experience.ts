@@ -4,8 +4,8 @@ export default function validateExperienceInput(data: any) {
   let errors: any = {};
   console.log(data);
 
-  data.from ? data.handle : (data.handle = "");
-  data.title ? data.status : (data.status = "");
+  data.from ? data.from : (data.from = "");
+  data.title ? data.title : (data.title = "");
   data.company ? data.company : (data.company = "");
 
   if (Validator.isEmpty(data.title)) {
