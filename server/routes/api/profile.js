@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var router = express_1.default.Router();
 var passport = require("passport");
+var User_1 = require("../../models/User");
 var Profile_1 = require("../../models/Profile");
 var profile_1 = __importDefault(require("../../validation/profile"));
 var experience_1 = __importDefault(require("../../validation/experience"));
@@ -130,6 +131,7 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
                 .catch(function (err) { return res.status(404).json(err); });
         }
         else {
+            console.log("***HERE***");
             // Create profile
             // Does 'handle' exist
             Profile_1.Profile.findOne({ handle: userInfo.handle })
@@ -140,10 +142,15 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
                         .json({ exists: "That handle already exists." });
                 }
                 else {
-                    userInfo.user.id = req.user.id;
+                    console.log("HERE2");
+                    console.log(req.user.id);
+                    // userInfo.user._id = req.user.id;
+                    console.log("CHECK", req.user._id);
+                    console.log("useriNfo", userInfo.user);
                     new Profile_1.Profile(userInfo)
                         .save()
-                        .then(function (profile) { return res.json(profile); });
+                        .then(function (profile) { return res.json(profile); })
+                        .catch(function (err) { return res.json(err); });
                 }
             })
                 .catch(function (err) { return res.status(404).json(err); });
@@ -222,21 +229,32 @@ router.post("/education", passport.authenticate("jwt", { session: false }), func
 router.delete("/experience/:exp_id", passport.authenticate("jwt", { session: false }), function (req, res) {
     Profile_1.Profile.findOne({ user: req.user.id })
         .then(function (profile) {
-        console.log("req.params.exp_id", req.params.exp_id);
-        console.log("PROFILE", profile.experience);
         var indexOfExperience = profile.experience
             .map(function (exp) { return exp.id; })
             .indexOf(req.params.exp_id);
-        // Remove experience
-        console.log("indexOfExperience", indexOfExperience);
+        // Splice will delete the last entry with an index of -1 if it doesn't exist; return to prevent
         if (indexOfExperience === -1)
             return res.status(404).json("This experience no longer exists.");
+        // Remove experience
         profile.experience.splice(indexOfExperience, 1);
-        console.log("profile.experience", profile.experience);
         profile
             .save()
             .then(function (profile) { return res.json(profile); })
             .catch(function (err) { return res.status(400).json(err); });
+    })
+        .catch(function (err) { return res.status(404).json(err); });
+});
+/**
+ * * DELETE api/profile
+ * ? Delete both profile and user
+ * ! PRIVATE
+ */
+router.delete("/", passport.authenticate("jwt", { session: false }), function (req, res) {
+    Profile_1.Profile.findOneAndRemove({ use: req.user.id })
+        .then(function () {
+        User_1.User.findOneAndRemove({ _id: req.user.id }).then(function () {
+            res.json("User and profile deleted successfully.");
+        });
     })
         .catch(function (err) { return res.status(404).json(err); });
 });

@@ -145,6 +145,7 @@ router.post(
           .then((profile: any) => res.json(profile))
           .catch((err: any) => res.status(404).json(err));
       } else {
+        console.log("***HERE***");
         // Create profile
         // Does 'handle' exist
         Profile.findOne({ handle: userInfo.handle })
@@ -154,10 +155,17 @@ router.post(
                 .status(400)
                 .json({ exists: "That handle already exists." });
             } else {
-              userInfo.user.id = req.user.id;
+              console.log("HERE2");
+              console.log(req.user.id)
+              // userInfo.user._id = req.user.id;
+              console.log("CHECK", req.user._id)
+              console.log("useriNfo", userInfo.user)
+              
+
               new Profile(userInfo)
                 .save()
-                .then((profile: any) => res.json(profile));
+                .then((profile: any) => res.json(profile))
+                .catch((err: any) => res.json(err));
             }
           })
           .catch((err: any) => res.status(404).json(err));
@@ -264,18 +272,14 @@ router.delete(
   (req: any, res) => {
     Profile.findOne({ user: req.user.id })
       .then((profile: any) => {
-        console.log("req.params.exp_id", req.params.exp_id);
-        console.log("PROFILE", profile.experience);
         const indexOfExperience = profile.experience
           .map((exp: any) => exp.id)
           .indexOf(req.params.exp_id);
-        // Remove experience
-        console.log("indexOfExperience", indexOfExperience);
+        // Splice will delete the last entry with an index of -1 if it doesn't exist; return to prevent
         if (indexOfExperience === -1)
           return res.status(404).json("This experience no longer exists.");
+        // Remove experience
         profile.experience.splice(indexOfExperience, 1);
-
-        console.log("profile.experience", profile.experience);
 
         profile
           .save()
@@ -286,4 +290,23 @@ router.delete(
   }
 );
 
+/**
+ * * DELETE api/profile
+ * ? Delete both profile and user
+ * ! PRIVATE
+ */
+
+router.delete(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req: any, res) => {
+    Profile.findOneAndRemove({ use: req.user.id })
+      .then(() => {
+        User.findOneAndRemove({ _id: req.user.id }).then(() => {
+          res.json("User and profile deleted successfully.");
+        });
+      })
+      .catch((err: any) => res.status(404).json(err));
+  }
+);
 module.exports = router;
