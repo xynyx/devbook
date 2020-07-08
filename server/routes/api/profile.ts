@@ -5,7 +5,6 @@ import { User } from "../../models/User";
 import { Profile } from "../../models/Profile";
 import validateProfileInput from "../../validation/profile";
 
-
 // Load Profile Model
 // const Profile = require("../../models/Profile");
 // const User = require("../../models/User");
@@ -70,15 +69,27 @@ router.post(
 
     // Convert comma separated values into array
     // userInfo.skills.split(",");
+    //! This may need fixing
     userInfo.skills = userInfo.skills.split(",");
     for (const property in userInfo) {
       if (property === "user") continue;
-      if (property === "social") {
-        for (const innerProperty in userInfo[property]) {
-          if (!userInfo[innerProperty]) {
-            delete userInfo[innerProperty];
-          }
-        }
+      // if (property === "social") {
+      //   if (Object.keys(userInfo[property]).length === 0) {
+      //     delete userInfo[property];
+      //     continue;
+      //   }
+      //   // for (const innerProperty in userInfo[property]) {
+      //   //   if (!userInfo[innerProperty]) {
+      //   //     delete userInfo[innerProperty];
+      //   //   }
+      //   // }
+      // }
+      if (
+        property === "twitter" ||
+        property === "instagram" ||
+        property === "linkedIn"
+      ) {
+        userInfo.social = { [`${property}`]: userInfo[property] };
       }
       if (!userInfo[property]) {
         delete userInfo[property];
@@ -93,7 +104,7 @@ router.post(
         Profile.findOneAndUpdate(
           { user: req.user.id },
           { $set: userInfo },
-          { new: true, useFindAndModify: true },
+          { new: true, useFindAndModify: true }
         ).then((profile: any) => res.json(profile));
       } else {
         // Create profile

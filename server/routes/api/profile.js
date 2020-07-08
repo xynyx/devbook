@@ -39,7 +39,8 @@ router.get("/", passport.authenticate("jwt", { session: false }), function (req,
  * Using JWT allows us not to have specify user Id (eg. api/profile/:id) -> receives JWT payload with user information instead
  */
 router.post("/", passport.authenticate("jwt", { session: false }), function (req, res) {
-    var _a = profile_1.default(req.body), errors = _a.errors, isValid = _a.isValid;
+    var _a;
+    var _b = profile_1.default(req.body), errors = _b.errors, isValid = _b.isValid;
     // Check valid
     if (!isValid) {
         return res.status(400).json(errors);
@@ -60,16 +61,26 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
     console.log("userInfo BEFORE", userInfo);
     // Convert comma separated values into array
     // userInfo.skills.split(",");
+    //! This may need fixing
     userInfo.skills = userInfo.skills.split(",");
     for (var property in userInfo) {
         if (property === "user")
             continue;
-        if (property === "social") {
-            for (var innerProperty in userInfo[property]) {
-                if (!userInfo[innerProperty]) {
-                    delete userInfo[innerProperty];
-                }
-            }
+        // if (property === "social") {
+        //   if (Object.keys(userInfo[property]).length === 0) {
+        //     delete userInfo[property];
+        //     continue;
+        //   }
+        //   // for (const innerProperty in userInfo[property]) {
+        //   //   if (!userInfo[innerProperty]) {
+        //   //     delete userInfo[innerProperty];
+        //   //   }
+        //   // }
+        // }
+        if (property === "twitter" ||
+            property === "instagram" ||
+            property === "linkedIn") {
+            userInfo.social = (_a = {}, _a["" + property] = userInfo[property], _a);
         }
         if (!userInfo[property]) {
             delete userInfo[property];
