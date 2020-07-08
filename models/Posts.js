@@ -52,5 +52,5 @@ var PostSchema = new Schema({
         },
     ],
 });
-exports.Post = mongoose.model("post", PostSchema);
+exports.Post = mongoose.model("posts", PostSchema);
 //# sourceMappingURL=Posts.js.map
