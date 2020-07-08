@@ -26,6 +26,8 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req: any, res: any) => {
     Profile.findOne({ user: req.user.id })
+      // Populates name and avatar field (leaving out email) when finding this data, otherwise it won't be included
+      .populate("user", ["name", "avatar"])
       .then((profile: any) => {
         if (!profile) {
           return res.status(404).json({ noprofile: "No profile found" });
@@ -61,17 +63,6 @@ router.post(
     userInfo.skills = userInfo.skills.split(",");
     for (const property in userInfo) {
       if (property === "user") continue;
-      // if (property === "social") {
-      //   if (Object.keys(userInfo[property]).length === 0) {
-      //     delete userInfo[property];
-      //     continue;
-      //   }
-      //   // for (const innerProperty in userInfo[property]) {
-      //   //   if (!userInfo[innerProperty]) {
-      //   //     delete userInfo[innerProperty];
-      //   //   }
-      //   // }
-      // }
       // If property is a social network, must build social key and add the property to social
       if (
         property === "twitter" ||

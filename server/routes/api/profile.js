@@ -24,6 +24,8 @@ router.get("/test", function (req, res) { return res.json({ msg: "Profile works"
  */
 router.get("/", passport.authenticate("jwt", { session: false }), function (req, res) {
     Profile_1.Profile.findOne({ user: req.user.id })
+        // Populates name and avatar field (leaving out email) when finding this data, otherwise it won't be included
+        .populate("user", ["name", "avatar"])
         .then(function (profile) {
         if (!profile) {
             return res.status(404).json({ noprofile: "No profile found" });
@@ -54,17 +56,6 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
     for (var property in userInfo) {
         if (property === "user")
             continue;
-        // if (property === "social") {
-        //   if (Object.keys(userInfo[property]).length === 0) {
-        //     delete userInfo[property];
-        //     continue;
-        //   }
-        //   // for (const innerProperty in userInfo[property]) {
-        //   //   if (!userInfo[innerProperty]) {
-        //   //     delete userInfo[innerProperty];
-        //   //   }
-        //   // }
-        // }
         // If property is a social network, must build social key and add the property to social
         if (property === "twitter" ||
             property === "instagram" ||
