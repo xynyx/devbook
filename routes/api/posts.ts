@@ -81,7 +81,7 @@ router.delete(
           }
           post.remove().then(() => res.json("Successfully deleted."));
         })
-        .then((err: any) => res.status(404).json("Post not found"));
+        .catch((err: any) => res.status(404).json(err));
     });
   }
 );

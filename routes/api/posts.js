@@ -72,7 +72,7 @@ router.delete("/:id", passport.authenticate("jwt", { session: false }), function
             }
             post.remove().then(function () { return res.json("Successfully deleted."); });
         })
-            .then(function (err) { return res.status(404).json("Post not found"); });
+            .catch(function (err) { return res.status(404).json(err); });
     });
 });
 module.exports = router;
