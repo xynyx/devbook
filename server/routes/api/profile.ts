@@ -71,6 +71,22 @@ router.get("/handle/:handle", (req, res) => {
 });
 
 /**
+ * * GET api/profile/all
+ * ? Find all profiles
+ */
+ router.get("/all", (req, res) => {
+  Profile.find()
+    .populate("user", ["name", "avatar"])
+    .then((profiles: any) => {
+      if (!profiles) {
+        res.status(404).json("There are no profiles.");
+      }
+      res.json(profiles);
+    })
+    .catch((err: any) => res.status(404).json(err));
+});
+
+/**
  * * POST api/profile
  * ? Create/edit profile
  * ! PRIVATE
@@ -123,22 +139,26 @@ router.post(
           { user: req.user.id },
           { $set: userInfo },
           { new: true, useFindAndModify: true }
-        ).then((profile: any) => res.json(profile));
+        )
+          .then((profile: any) => res.json(profile))
+          .catch((err: any) => res.status(404).json(err));
       } else {
         // Create profile
         // Does 'handle' exist
-        Profile.findOne({ handle: userInfo.handle }).then((handle: any) => {
-          if (handle) {
-            return res
-              .status(400)
-              .json({ exists: "That handle already exists." });
-          } else {
-            userInfo.user.id = req.user.id;
-            new Profile(userInfo)
-              .save()
-              .then((profile: any) => res.json(profile));
-          }
-        });
+        Profile.findOne({ handle: userInfo.handle })
+          .then((handle: any) => {
+            if (handle) {
+              return res
+                .status(400)
+                .json({ exists: "That handle already exists." });
+            } else {
+              userInfo.user.id = req.user.id;
+              new Profile(userInfo)
+                .save()
+                .then((profile: any) => res.json(profile));
+            }
+          })
+          .catch((err: any) => res.status(404).json(err));
       }
     });
 

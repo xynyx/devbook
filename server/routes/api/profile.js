@@ -65,6 +65,21 @@ router.get("/handle/:handle", function (req, res) {
         .catch(function (err) { return res.status(404).json(err); });
 });
 /**
+ * * GET api/profile/all
+ * ? Find all profiles
+ */
+router.get("/all", function (req, res) {
+    Profile_1.Profile.find()
+        .populate("user", ["name", "avatar"])
+        .then(function (profiles) {
+        if (!profiles) {
+            res.status(404).json("There are no profiles.");
+        }
+        res.json(profiles);
+    })
+        .catch(function (err) { return res.status(404).json(err); });
+});
+/**
  * * POST api/profile
  * ? Create/edit profile
  * ! PRIVATE
@@ -108,12 +123,15 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
     Profile_1.Profile.findOne({ user: req.user.id }).then(function (profile) {
         // Update profile
         if (profile) {
-            Profile_1.Profile.findOneAndUpdate({ user: req.user.id }, { $set: userInfo }, { new: true, useFindAndModify: true }).then(function (profile) { return res.json(profile); });
+            Profile_1.Profile.findOneAndUpdate({ user: req.user.id }, { $set: userInfo }, { new: true, useFindAndModify: true })
+                .then(function (profile) { return res.json(profile); })
+                .catch(function (err) { return res.status(404).json(err); });
         }
         else {
             // Create profile
             // Does 'handle' exist
-            Profile_1.Profile.findOne({ handle: userInfo.handle }).then(function (handle) {
+            Profile_1.Profile.findOne({ handle: userInfo.handle })
+                .then(function (handle) {
                 if (handle) {
                     return res
                         .status(400)
@@ -125,7 +143,8 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
                         .save()
                         .then(function (profile) { return res.json(profile); });
                 }
-            });
+            })
+                .catch(function (err) { return res.status(404).json(err); });
         }
     });
     //exp, edu, soc
