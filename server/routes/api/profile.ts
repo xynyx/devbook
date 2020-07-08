@@ -52,18 +52,6 @@ router.post(
     if (!isValid) {
       return res.status(400).json(errors);
     }
-    // const profileFields = {};
-    // const {
-    //   handle,
-    //   user,
-    //   company,
-    //   website,
-    //   location,
-    //   status,
-    //   skills,
-    //   bio,
-    //   githubUsername,
-    // } = req.body;
     const userInfo = req.body;
     console.log("userInfo BEFORE", userInfo);
 
@@ -84,19 +72,25 @@ router.post(
       //   //   }
       //   // }
       // }
+      // If property is a social network, must build social key and add the property to social
       if (
         property === "twitter" ||
         property === "instagram" ||
         property === "linkedIn"
       ) {
-        userInfo.social = { [`${property}`]: userInfo[property] };
+        // Computed property syntax
+        // Creates key based on property name with the value
+        if (userInfo.social) {
+          userInfo.social[`${property}`] = userInfo[property];
+        } else {
+          userInfo.social = { [`${property}`]: userInfo[property] };
+        }
       }
+      // If the property hasn't been inputted by user (and isn't required), delete that key for the new userInfo object
       if (!userInfo[property]) {
         delete userInfo[property];
       }
     }
-
-    // console.log(userInfo.skills.split(","), "skills");
 
     Profile.findOne({ user: req.user.id }).then((profile: any) => {
       // Update profile

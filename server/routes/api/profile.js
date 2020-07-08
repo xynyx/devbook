@@ -45,18 +45,6 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
     if (!isValid) {
         return res.status(400).json(errors);
     }
-    // const profileFields = {};
-    // const {
-    //   handle,
-    //   user,
-    //   company,
-    //   website,
-    //   location,
-    //   status,
-    //   skills,
-    //   bio,
-    //   githubUsername,
-    // } = req.body;
     var userInfo = req.body;
     console.log("userInfo BEFORE", userInfo);
     // Convert comma separated values into array
@@ -77,16 +65,24 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
         //   //   }
         //   // }
         // }
+        // If property is a social network, must build social key and add the property to social
         if (property === "twitter" ||
             property === "instagram" ||
             property === "linkedIn") {
-            userInfo.social = (_a = {}, _a["" + property] = userInfo[property], _a);
+            // Computed property syntax
+            // Creates key based on property name with the value
+            if (userInfo.social) {
+                userInfo.social["" + property] = userInfo[property];
+            }
+            else {
+                userInfo.social = (_a = {}, _a["" + property] = userInfo[property], _a);
+            }
         }
+        // If the property hasn't been inputted by user (and isn't required), delete that key for the new userInfo object
         if (!userInfo[property]) {
             delete userInfo[property];
         }
     }
-    // console.log(userInfo.skills.split(","), "skills");
     Profile_1.Profile.findOne({ user: req.user.id }).then(function (profile) {
         // Update profile
         if (profile) {
