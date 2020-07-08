@@ -5,6 +5,7 @@ import { User } from "../../models/User";
 import { Profile } from "../../models/Profile";
 import validateProfileInput from "../../validation/profile";
 import validateExperienceInput from "../../validation/experience";
+import validateEducationInput from "../../validation/education";
 
 // Load Profile Model
 // const Profile = require("../../models/Profile");
@@ -175,7 +176,6 @@ router.post(
  * ? Add experience to profile
  * ! PRIVATE
  */
-
 router.post(
   "/experience",
   passport.authenticate("jwt", { session: false }),
@@ -189,18 +189,35 @@ router.post(
       if (!isValid) {
         return res.status(400).json(errors);
       }
-      const {
-        title,
-        company,
-        location,
-        from,
-        to,
-        current,
-        description,
-      } = req.body;
-      // const newExp = {};
 
       profile.experience.unshift(req.body);
+      profile.save().then((profile: any) => {
+        res.json(profile);
+      });
+    });
+  }
+);
+
+/**
+ * * POST api/profile/education
+ * ? Add education to profile
+ * ! PRIVATE
+ */
+ router.post(
+  "/education",
+  passport.authenticate("jwt", { session: false }),
+  (req: any, res) => {
+    Profile.findOne({ user: req.user.id }).then((profile: any) => {
+      console.log("req.body", req.body);
+
+      const { errors, isValid } = validateEducationInput(req.body);
+
+      // Check valid
+      if (!isValid) {
+        return res.status(400).json(errors);
+      }
+
+      profile.education.unshift(req.body);
       profile.save().then((profile: any) => {
         res.json(profile);
       });
