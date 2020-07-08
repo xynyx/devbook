@@ -8,6 +8,7 @@ const users = require("./routes/api/users");
 const profile = require("./routes/api/profile")
 const posts = require("./routes/api/posts")
 const passport = require("passport");
+mongoose.set('useFindAndModify', false);
 
 const app = express();
 

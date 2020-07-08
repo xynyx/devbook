@@ -12,9 +12,6 @@ function validateProfileInput(data) {
             : (data.skills = "")
         : (data.skills = "");
     console.log("AFTER", data);
-    // data.handle = !data.handle ? data.handle : "";
-    // data.status = !data.status ? data.status : "";
-    // data.skills = data.skills.length !== 0 ? data.skills : "";
     if (!Validator.isLength(data.handle, { min: 2, max: 30 })) {
         errors.handle = "Needs to be between 2 and 30 characters.";
     }
@@ -23,6 +20,9 @@ function validateProfileInput(data) {
     }
     if (Validator.isEmpty(data.skills)) {
         errors.skills = "At least one skill is required.";
+    }
+    if (Validator.isEmpty(data.status)) {
+        errors.status = "Status is required.";
     }
     if (data.website) {
         if (!Validator.isURL(data.website)) {

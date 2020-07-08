@@ -59,8 +59,11 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
     var userInfo = req.body;
     console.log("userInfo BEFORE", userInfo);
     // Convert comma separated values into array
-    userInfo.skills.split(",");
+    // userInfo.skills.split(",");
+    userInfo.skills = userInfo.skills.split(",");
     for (var property in userInfo) {
+        if (property === "user")
+            continue;
         if (property === "social") {
             for (var innerProperty in userInfo[property]) {
                 if (!userInfo[innerProperty]) {
@@ -72,10 +75,11 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
             delete userInfo[property];
         }
     }
-    Profile_1.Profile.findOne({ user: userInfo.user.id }).then(function (profile) {
+    // console.log(userInfo.skills.split(","), "skills");
+    Profile_1.Profile.findOne({ user: req.user.id }).then(function (profile) {
         // Update profile
         if (profile) {
-            Profile_1.Profile.findOneAndUpdate({ user: req.user.id }, { $set: userInfo }, { new: true }).then(function (profile) { return res.json(profile); });
+            Profile_1.Profile.findOneAndUpdate({ user: req.user.id }, { $set: userInfo }, { new: true, useFindAndModify: true }).then(function (profile) { return res.json(profile); });
         }
         else {
             // Create profile
@@ -87,6 +91,7 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
                         .json({ exists: "That handle already exists." });
                 }
                 else {
+                    userInfo.user.id = req.user.id;
                     new Profile_1.Profile(userInfo)
                         .save()
                         .then(function (profile) { return res.json(profile); });

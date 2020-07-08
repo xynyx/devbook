@@ -20,6 +20,7 @@ var users = require("./routes/api/users");
 var profile = require("./routes/api/profile");
 var posts = require("./routes/api/posts");
 var passport = require("passport");
+mongoose.set('useFindAndModify', false);
 var app = express_1.default();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

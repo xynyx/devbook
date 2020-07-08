@@ -5,6 +5,7 @@ import { User } from "../../models/User";
 import { Profile } from "../../models/Profile";
 import validateProfileInput from "../../validation/profile";
 
+
 // Load Profile Model
 // const Profile = require("../../models/Profile");
 // const User = require("../../models/User");
@@ -50,7 +51,7 @@ router.post(
 
     // Check valid
     if (!isValid) {
-      return res.status(400).json(errors)
+      return res.status(400).json(errors);
     }
     // const profileFields = {};
     // const {
@@ -68,8 +69,10 @@ router.post(
     console.log("userInfo BEFORE", userInfo);
 
     // Convert comma separated values into array
-    userInfo.skills.split(",");
+    // userInfo.skills.split(",");
+    userInfo.skills = userInfo.skills.split(",");
     for (const property in userInfo) {
+      if (property === "user") continue;
       if (property === "social") {
         for (const innerProperty in userInfo[property]) {
           if (!userInfo[innerProperty]) {
@@ -82,13 +85,15 @@ router.post(
       }
     }
 
-    Profile.findOne({ user: userInfo.user.id }).then((profile: any) => {
+    // console.log(userInfo.skills.split(","), "skills");
+
+    Profile.findOne({ user: req.user.id }).then((profile: any) => {
       // Update profile
       if (profile) {
         Profile.findOneAndUpdate(
           { user: req.user.id },
           { $set: userInfo },
-          { new: true }
+          { new: true, useFindAndModify: true },
         ).then((profile: any) => res.json(profile));
       } else {
         // Create profile
@@ -99,6 +104,7 @@ router.post(
               .status(400)
               .json({ exists: "That handle already exists." });
           } else {
+            userInfo.user.id = req.user.id;
             new Profile(userInfo)
               .save()
               .then((profile: any) => res.json(profile));
