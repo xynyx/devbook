@@ -128,5 +128,45 @@ router.post("/unlike/:id", passport.authenticate("jwt", { session: false }), fun
             .catch(function (err) { return res.status(404).json(err); });
     });
 });
+/**
+ * * POST api/posts/comment/:id
+ * ? Add comment to post
+ * ! PRIVATE
+ */
+router.post("/comment/:id", passport.authenticate("jwt", { session: false }), function (req, res) {
+    var _a = post_1.default(req.body), errors = _a.errors, isValid = _a.isValid;
+    if (!isValid)
+        return res.status(400).json(errors);
+    Posts_1.Post.findById(req.params.id)
+        .then(function (post) {
+        console.log("post", post);
+        post.comments.unshift(req.body);
+        post.save().then(function (post) { return res.json(post); });
+    })
+        .catch(function (err) { return res.status(404).json("Post not found."); });
+});
+/**
+ * * DELETE api/posts/comment/:id/:comment_id
+ * ? Delete comment in post
+ * ! PRIVATE
+ */
+router.delete("/comment/:id/:comment_id", passport.authenticate("jwt", { session: false }), function (req, res) {
+    Posts_1.Post.findById(req.params.id)
+        .then(function (post) {
+        // Check if comment exists
+        var idsOfComments = post.comments.map(function (item) {
+            return item.id.toString();
+        });
+        if (!idsOfComments.includes(req.params.comment_id)) {
+            return res.status(404).json("Comment doesn't exist.");
+        }
+        post.comments.splice(idsOfComments.indexOf(req.params.comment_id), 1);
+        post.save().then(function (post) { return res.json(post); });
+        // const removeIndex = post.comments
+        //   .map((item: any) => item.id.toString())
+        //   .indexOf(req.params.comment_id);
+    })
+        .catch(function (err) { return res.status(404).json("Post not found."); });
+});
 module.exports = router;
 //# sourceMappingURL=posts.js.map
