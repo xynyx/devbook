@@ -194,6 +194,7 @@ router.delete(
         const idsOfComments = post.comments.map((item: any) =>
           item.id.toString()
         );
+
         if (!idsOfComments.includes(req.params.comment_id)) {
           return res.status(404).json("Comment doesn't exist.");
         }
