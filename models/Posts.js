@@ -21,7 +21,7 @@ var PostSchema = new Schema({
         type: Date,
         default: Date.now,
     },
-    like: [
+    likes: [
         {
             user: {
                 type: Schema.Types.ObjectId,

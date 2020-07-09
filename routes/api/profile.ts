@@ -277,7 +277,6 @@ router.delete(
  * ? Delete both profile and user
  * ! PRIVATE
  */
-
 router.delete(
   "/",
   passport.authenticate("jwt", { session: false }),
@@ -293,4 +292,5 @@ router.delete(
       .catch((err: any) => res.status(404).json(err));
   }
 );
+
 module.exports = router;

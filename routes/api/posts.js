@@ -75,5 +75,30 @@ router.delete("/:id", passport.authenticate("jwt", { session: false }), function
             .catch(function (err) { return res.status(404).json(err); });
     });
 });
+/**
+ * * POST api/posts/like/:id
+ * ? Like post
+ * ! PRIVATE
+ */
+router.post("/like/:id", passport.authenticate("jwt", { session: false }), function (req, res) {
+    var user = req.user.id;
+    console.log("user", user);
+    Profile_1.Profile.findOne({ user: user }).then(function (profile) {
+        if (!profile)
+            res.status(400).json("You have no profile!");
+        console.log("req.params.id", req.params.id);
+        Posts_1.Post.findById(req.params.id)
+            .then(function (post) {
+            console.log('post', post);
+            if (post.likes.filter(function (like) { return like.user.toString() === user; })
+                .length > 0) {
+                return res.status(400).json("You already liked this post!");
+            }
+            post.likes.unshift({ user: user });
+            post.save().then(function (post) { return res.json(post); });
+        })
+            .catch(function (err) { return res.status(404).json(err); });
+    });
+});
 module.exports = router;
 //# sourceMappingURL=posts.js.map
