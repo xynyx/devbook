@@ -84,7 +84,7 @@ router.get("/all", function (req, res) {
  * * POST api/profile
  * ? Create/edit profile
  * ! PRIVATE
- * Using JWT allows us not to have specify user Id (eg. api/profile/:id) -> receives JWT payload with user information instead
+ * Using JWT allows you to not have to specify user Id (eg. api/profile/:id) -> receives JWT payload with user information instead
  */
 router.post("/", passport.authenticate("jwt", { session: false }), function (req, res) {
     var _a;
@@ -137,7 +137,6 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
                         .json({ exists: "That handle already exists." });
                 }
                 else {
-                    // userInfo.user._id = req.user.id;
                     new Profile_1.Profile(userInfo)
                         .save()
                         .then(function (profile) { return res.json(profile); })

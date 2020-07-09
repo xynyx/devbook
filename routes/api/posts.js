@@ -89,12 +89,40 @@ router.post("/like/:id", passport.authenticate("jwt", { session: false }), funct
         console.log("req.params.id", req.params.id);
         Posts_1.Post.findById(req.params.id)
             .then(function (post) {
-            console.log('post', post);
+            console.log("post", post);
             if (post.likes.filter(function (like) { return like.user.toString() === user; })
                 .length > 0) {
                 return res.status(400).json("You already liked this post!");
             }
             post.likes.unshift({ user: user });
+            post.save().then(function (post) { return res.json(post); });
+        })
+            .catch(function (err) { return res.status(404).json(err); });
+    });
+});
+/**
+ * * POST api/posts/unlike/:id
+ * ? Un-like post
+ * ! PRIVATE
+ */
+router.post("/unlike/:id", passport.authenticate("jwt", { session: false }), function (req, res) {
+    var user = req.user.id;
+    console.log("user", user);
+    Profile_1.Profile.findOne({ user: user }).then(function (profile) {
+        if (!profile)
+            res.status(400).json("You have no profile!");
+        console.log("req.params.id", req.params.id);
+        Posts_1.Post.findById(req.params.id)
+            .then(function (post) {
+            console.log("post", post);
+            if (post.likes.filter(function (like) { return like.user.toString() === user; })
+                .length === 0) {
+                return res.status(400).json("You haven't liked this post yet!");
+            }
+            var indexOfLike = post.likes
+                .map(function (item) { return item.user.toString(); })
+                .indexOf(req.user.id);
+            post.likes.splice(indexOfLike, 1);
             post.save().then(function (post) { return res.json(post); });
         })
             .catch(function (err) { return res.status(404).json(err); });

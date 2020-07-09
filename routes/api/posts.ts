@@ -119,4 +119,41 @@ router.post(
   }
 );
 
+/**
+ * * POST api/posts/unlike/:id
+ * ? Un-like post
+ * ! PRIVATE
+ */
+router.post(
+  "/unlike/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req: any, res) => {
+    const user = req.user.id;
+    console.log("user", user);
+    Profile.findOne({ user }).then((profile: any) => {
+      if (!profile) res.status(400).json("You have no profile!");
+      console.log("req.params.id", req.params.id);
+      Post.findById(req.params.id)
+        .then((post: any) => {
+          console.log("post", post);
+          if (
+            post.likes.filter((like: any) => like.user.toString() === user)
+              .length === 0
+          ) {
+            return res.status(400).json("You haven't liked this post yet!");
+          }
+
+          const indexOfLike = post.likes
+            .map((item: any) => item.user.toString())
+            .indexOf(req.user.id);
+
+          post.likes.splice(indexOfLike, 1);
+
+          post.save().then((post: any) => res.json(post));
+        })
+        .catch((err: any) => res.status(404).json(err));
+    });
+  }
+);
+
 module.exports = router;
