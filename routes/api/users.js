@@ -10,6 +10,7 @@ var bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 var passport = require("passport");
 var User_1 = require("../../models/User");
+var register_1 = __importDefault(require("../../validation/register"));
 // const User = require("../../models/User");
 /**
  * * GET api/users/test
@@ -21,6 +22,9 @@ router.get("/test", function (req, res) { return res.json({ msg: "Users works" }
  * ? Register User
  */
 router.post("/register", function (req, res) {
+    var _a = register_1.default(req.body), errors = _a.errors, isValid = _a.isValid;
+    if (!isValid)
+        return res.status(404).json(errors);
     User_1.User.findOne({ email: req.body.email }).then(function (user) {
         if (user) {
             return res.status(400).json({ email: "Email already exists" });
