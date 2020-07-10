@@ -38,13 +38,14 @@ export default class Register extends Component {
 
   render() {
     const { errors } = this.state;
-    const invalidName = classnames("form-control form-control-lg", {
+    const baseClasses = "form-control form-control-lg";
+    const invalidName = classnames(baseClasses, {
       "is-invalid": errors.name,
     });
-    const invalidEmail = classnames("form-control form-control-lg", {
+    const invalidEmail = classnames(baseClasses, {
       "is-invalid": errors.email,
     });
-    const invalidPassword = classnames("form-control form-control-lg", {
+    const invalidPassword = classnames(baseClasses, {
       "is-invalid": errors.password,
     });
 
@@ -55,7 +56,7 @@ export default class Register extends Component {
             <div className="col-md-8 m-auto">
               <h1 className="display-4 text-center">Sign Up</h1>
               <p className="lead text-center">Create your DevBook account</p>
-              <form onSubmit={this.handleSubmit}>
+              <form noValidate onSubmit={this.handleSubmit}>
                 <div className="form-group">
                   <input
                     type="text"
@@ -79,7 +80,11 @@ export default class Register extends Component {
                     value={this.state.email}
                     onChange={this.handleInputChange}
                   />
-                  <small className="form-text text-muted">?</small>
+
+                  {/* <small className="form-text text-muted">?</small> */}
+                  {errors.email && (
+                    <div className="invalid-feedback">{errors.email}</div>
+                  )}
                 </div>
                 <div className="form-group">
                   <input
@@ -90,6 +95,9 @@ export default class Register extends Component {
                     value={this.state.password}
                     onChange={this.handleInputChange}
                   />
+                  {errors.password && (
+                    <div className="invalid-feedback">{errors.password}</div>
+                  )}
                 </div>
                 <div className="form-group">
                   <input
@@ -100,6 +108,9 @@ export default class Register extends Component {
                     // value={this.state.password2}
                     // onChange={this.handleInputChange}
                   />
+                  {/* {errors.password2 && (
+                    <div className="invalid-feedback">{errors.password2}</div>
+                  )} */}
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
