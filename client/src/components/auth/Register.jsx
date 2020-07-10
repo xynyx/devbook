@@ -35,7 +35,7 @@ export default class Register extends Component {
           <div className="row">
             <div className="col-md-8 m-auto">
               <h1 className="display-4 text-center">Sign Up</h1>
-              <p className="lead text-center">Create your Devbook account</p>
+              <p className="lead text-center">Create your DevBook account</p>
               <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
                   <input
