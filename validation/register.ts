@@ -14,6 +14,11 @@ export default function validateRegisterInput(data: any) {
   if (Validator.isEmpty(data.password)) {
     errors.password = "Password field is required.";
   }
+
+  if (!Validator.isLength(data.password, { min: 6, max: 20 })) {
+    errors.password = "Needs to be between 6 and 20 characters.";
+  }
+
   if (Validator.isEmpty(data.name)) {
     errors.name = "Name field is required.";
   }
