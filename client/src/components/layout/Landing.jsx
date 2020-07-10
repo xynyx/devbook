@@ -11,7 +11,6 @@ export default class Landing extends Component {
               <div className="col-md-12 text-center">
                 <h1 className="display-3 mb-4">Devbook</h1>
                 <p className="lead">
-                  {" "}
                   Create a profile, post on the discussion board, and get
                   guidance and support from other developers.
                 </p>

@@ -8,14 +8,10 @@ const users = require("./routes/api/users");
 const profile = require("./routes/api/profile");
 const posts = require("./routes/api/posts");
 const passport = require("passport");
-const methodOverride = require("method-override");
-
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-app.use(methodOverride("X-HTTP-Method-Override"));
 
 const db = process.env.MONGO_URI;
 
