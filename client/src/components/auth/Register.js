@@ -74,42 +74,30 @@ var Register = /** @class */ (function (_super) {
         var invalidPassword = classnames_1.default(baseClasses, {
             "is-invalid": errors.password,
         });
-        return (<div className="register">
-        {user ? user.name : null}
-        <div className="container">
-          <div className="row">
-            <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Sign Up</h1>
-              <p className="lead text-center">Create your DevBook account</p>
-              <form noValidate onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                  <input type="text" 
-        // className="form-control form-control-lg"
-        className={invalidName} placeholder="Name" name="name" value={this.state.name} onChange={this.handleInputChange}/>
-                  {errors.name && (<div className="invalid-feedback">{errors.name}</div>)}
-                </div>
-                <div className="form-group">
-                  <input type="email" className={invalidEmail} placeholder="Email Address" name="email" value={this.state.email} onChange={this.handleInputChange}/>
-
-                  
-                  {errors.email && (<div className="invalid-feedback">{errors.email}</div>)}
-                </div>
-                <div className="form-group">
-                  <input type="password" className={invalidPassword} placeholder="Password" name="password" value={this.state.password} onChange={this.handleInputChange}/>
-                  {errors.password && (<div className="invalid-feedback">{errors.password}</div>)}
-                </div>
-                <div className="form-group">
-                  <input type="password" 
-        // className={invalidName}
-        placeholder="Confirm Password" name="password2"/>
-                  
-                </div>
-                <input type="submit" className="btn btn-info btn-block mt-4"/>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>);
+        return (react_1.default.createElement("div", { className: "register" },
+            user ? user.name : null,
+            react_1.default.createElement("div", { className: "container" },
+                react_1.default.createElement("div", { className: "row" },
+                    react_1.default.createElement("div", { className: "col-md-8 m-auto" },
+                        react_1.default.createElement("h1", { className: "display-4 text-center" }, "Sign Up"),
+                        react_1.default.createElement("p", { className: "lead text-center" }, "Create your DevBook account"),
+                        react_1.default.createElement("form", { noValidate: true, onSubmit: this.handleSubmit },
+                            react_1.default.createElement("div", { className: "form-group" },
+                                react_1.default.createElement("input", { type: "text", 
+                                    // className="form-control form-control-lg"
+                                    className: invalidName, placeholder: "Name", name: "name", value: this.state.name, onChange: this.handleInputChange }),
+                                errors.name && (react_1.default.createElement("div", { className: "invalid-feedback" }, errors.name))),
+                            react_1.default.createElement("div", { className: "form-group" },
+                                react_1.default.createElement("input", { type: "email", className: invalidEmail, placeholder: "Email Address", name: "email", value: this.state.email, onChange: this.handleInputChange }),
+                                errors.email && (react_1.default.createElement("div", { className: "invalid-feedback" }, errors.email))),
+                            react_1.default.createElement("div", { className: "form-group" },
+                                react_1.default.createElement("input", { type: "password", className: invalidPassword, placeholder: "Password", name: "password", value: this.state.password, onChange: this.handleInputChange }),
+                                errors.password && (react_1.default.createElement("div", { className: "invalid-feedback" }, errors.password))),
+                            react_1.default.createElement("div", { className: "form-group" },
+                                react_1.default.createElement("input", { type: "password", 
+                                    // className={invalidName}
+                                    placeholder: "Confirm Password", name: "password2" })),
+                            react_1.default.createElement("input", { type: "submit", className: "btn btn-info btn-block mt-4" })))))));
     };
     return Register;
 }(react_1.Component));

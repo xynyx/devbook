@@ -12,7 +12,7 @@ interface UserRegisterInfo {
 }
 
 interface RegisterProps {
-  registerUser(user: any): object;
+  registerUser: any;
   auth: {
     user: UserRegisterInfo;
   };
