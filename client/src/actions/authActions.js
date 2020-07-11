@@ -49,6 +49,7 @@ exports.setCurrentUser = function (decoded) {
 exports.logoutUser = function () { return function (dispatch) {
     // Remove JWT token
     try {
+        console.log("here");
         localStorage.removeItem("jwtToken");
         // Delete Authorization header with the token
         setAuthToken_1.default(false);

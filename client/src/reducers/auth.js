@@ -21,7 +21,7 @@ function default_1(state, action) {
     console.log("action.payload", action.payload);
     switch (action.type) {
         case types_1.SET_USER:
-            return __assign(__assign({}, state), { isAuthenticated: action.payload ? true : false, user: action.payload });
+            return __assign(__assign({}, state), { isAuthenticated: Object.keys(action.payload).length > 0 ? true : false, user: action.payload });
         default:
             return state;
     }

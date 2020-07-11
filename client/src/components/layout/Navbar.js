@@ -41,7 +41,7 @@ var Navbar = /** @class */ (function (_super) {
                 react_1.default.createElement("a", { 
                     // href="#"
                     onClick: this.handleLogout.bind(this), className: "nav-link" },
-                    react_1.default.createElement("img", { src: user.avatar, alt: user.name, style: { width: "25px", marginRight: "5px" } }),
+                    react_1.default.createElement("img", { className: "rounded-circle", src: user.avatar, alt: user.name, style: { width: "25px", marginRight: "5px" } }),
                     "Logout"))));
         var guestLinks = (react_1.default.createElement("ul", { className: "navbar-nav ml-auto" },
             react_1.default.createElement("li", { className: "nav-item" },

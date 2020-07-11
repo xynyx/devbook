@@ -11,7 +11,8 @@ export default function (state = initialState, action: any) {
     case SET_USER:
       return {
         ...state,
-        isAuthenticated: action.payload ? true : false,
+        isAuthenticated:
+          Object.keys(action.payload).length > 0 ? true : false,
         user: action.payload,
       };
     default:
