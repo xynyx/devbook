@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import classnames from "classnames";
 import axios from "axios";
 import { connect } from "react-redux";
@@ -12,11 +13,19 @@ interface UserRegisterInfo {
 }
 
 interface RegisterProps {
-  registerUser(user: UserRegisterInfo): any;
+  registerUser(user: UserRegisterInfo, history: any): any;
   auth: {
     user: UserRegisterInfo;
   };
+  errors: any,
+  history: any
 }
+
+// Takes in state -> convert to props to pass to the component / Redux 
+const mapStateToProps = (state: any) => ({
+  auth: state.auth,
+  errors: state.errors,
+});
 
 // Component<Props, State>
 class Register extends Component<RegisterProps, UserRegisterInfo> {
@@ -45,12 +54,13 @@ class Register extends Component<RegisterProps, UserRegisterInfo> {
     const { name, email, password } = this.state;
     const newUser = { name, email, password };
 
-    this.props.registerUser(newUser);
-  
+    // The action (registerUser) cannot use history like a component can
+    // However you can pass an action the history to be able to redirect within the action itself
+    this.props.registerUser(newUser, this.props.history);
   };
 
   render() {
-    const { errors } = this.state;
+    const { errors } = this.props;
     const { user } = this.props.auth;
 
     const baseClasses = "form-control form-control-lg";
@@ -66,7 +76,6 @@ class Register extends Component<RegisterProps, UserRegisterInfo> {
 
     return (
       <div className="register">
-        {user ? user.name : null}
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
@@ -138,9 +147,6 @@ class Register extends Component<RegisterProps, UserRegisterInfo> {
   }
 }
 
-// Takes in state
-const mapStateToProps = (state: { auth: any }) => ({
-  auth: state.auth,
-});
-
-export default connect(mapStateToProps, { registerUser })(Register);
+// withRouter, which is a HOC, gives you access to the history object and the closest <Route> match 
+// Passes 'match, location, history' props to the wrapped component whenever it renders
+export default connect(mapStateToProps, { registerUser })(withRouter(Register));

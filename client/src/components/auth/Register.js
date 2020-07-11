@@ -24,9 +24,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
+var react_router_dom_1 = require("react-router-dom");
 var classnames_1 = __importDefault(require("classnames"));
 var react_redux_1 = require("react-redux");
 var authActions_1 = require("../../actions/authActions");
+// Takes in state -> convert to props to pass to the component / Redux 
+var mapStateToProps = function (state) { return ({
+    auth: state.auth,
+    errors: state.errors,
+}); };
 // Component<Props, State>
 var Register = /** @class */ (function (_super) {
     __extends(Register, _super);
@@ -42,7 +48,9 @@ var Register = /** @class */ (function (_super) {
             e.preventDefault();
             var _a = _this.state, name = _a.name, email = _a.email, password = _a.password;
             var newUser = { name: name, email: email, password: password };
-            _this.props.registerUser(newUser);
+            // The action (registerUser) cannot use history like a component can
+            // However you can pass an action the history to be able to redirect within the action itself
+            _this.props.registerUser(newUser, _this.props.history);
         };
         _this.state = {
             name: "",
@@ -55,7 +63,7 @@ var Register = /** @class */ (function (_super) {
         return _this;
     }
     Register.prototype.render = function () {
-        var errors = this.state.errors;
+        var errors = this.props.errors;
         var user = this.props.auth.user;
         var baseClasses = "form-control form-control-lg";
         var invalidName = classnames_1.default(baseClasses, {
@@ -68,7 +76,6 @@ var Register = /** @class */ (function (_super) {
             "is-invalid": errors.password,
         });
         return (react_1.default.createElement("div", { className: "register" },
-            user ? user.name : null,
             react_1.default.createElement("div", { className: "container" },
                 react_1.default.createElement("div", { className: "row" },
                     react_1.default.createElement("div", { className: "col-md-8 m-auto" },
@@ -94,8 +101,6 @@ var Register = /** @class */ (function (_super) {
     };
     return Register;
 }(react_1.Component));
-// Takes in state
-var mapStateToProps = function (state) { return ({
-    auth: state.auth,
-}); };
-exports.default = react_redux_1.connect(mapStateToProps, { registerUser: authActions_1.registerUser })(Register);
+// withRouter, which is a HOC, gives you access to the history object and the closest <Route> match 
+// Passes 'match, location, history' props to the wrapped component whenever it renders
+exports.default = react_redux_1.connect(mapStateToProps, { registerUser: authActions_1.registerUser })(react_router_dom_1.withRouter(Register));
