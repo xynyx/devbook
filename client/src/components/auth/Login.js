@@ -57,6 +57,11 @@ var Login = /** @class */ (function (_super) {
         _this.handleSubmit = _this.handleSubmit.bind(_this);
         return _this;
     }
+    Login.prototype.componentDidMount = function () {
+        if (this.props.auth.isAuthenticated) {
+            this.props.history.push("/dashboard");
+        }
+    };
     Login.prototype.componentWillReceiveProps = function (nextProps) {
         console.log("nextProps :>> ", nextProps);
         if (nextProps.errors) {

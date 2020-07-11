@@ -26,6 +26,13 @@ if (token) {
   const decoded = jwt_decode(token);
   // Set user and isAuthenticated to true
   store.dispatch(setCurrentUser(decoded));
+
+  const currentTime = Date.now() / 1000;
+  if (decoded.exp < currentTime) {
+    store.dispatch(logoutUser());
+
+    window.location.href = "login";
+  }
 }
 
 function App() {

@@ -4,18 +4,16 @@ import classnames from "classnames";
 import axios from "axios";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
-import { UserRegisterInfo, AuthInterface } from "../../types";
+import { UserRegisterInfo, AuthInterface, Auth } from "../../types";
 
 interface RegisterProps {
   registerUser(user: UserRegisterInfo, history: any): any;
-  auth: {
-    user: UserRegisterInfo;
-  };
+  auth: Auth;
   errors?: any;
   history?: any;
 }
 
-// Takes in state -> convert to props to pass to the component / Redux
+// Takes in states -> convert to props to pass to the component / Redux
 const mapStateToProps = (state: AuthInterface) => ({
   auth: state.auth,
   errors: state.errors,
@@ -52,6 +50,12 @@ class Register extends Component<RegisterProps, UserRegisterInfo> {
     // However you can pass an action the history to be able to redirect within the action itself
     this.props.registerUser(newUser, this.props.history);
   };
+
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/dashboard");
+    }
+  }
 
   componentWillReceiveProps(nextProps: any) {
     if (nextProps.errors) {

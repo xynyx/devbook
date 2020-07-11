@@ -28,7 +28,7 @@ var react_router_dom_1 = require("react-router-dom");
 var classnames_1 = __importDefault(require("classnames"));
 var react_redux_1 = require("react-redux");
 var authActions_1 = require("../../actions/authActions");
-// Takes in state -> convert to props to pass to the component / Redux
+// Takes in states -> convert to props to pass to the component / Redux
 var mapStateToProps = function (state) { return ({
     auth: state.auth,
     errors: state.errors,
@@ -62,6 +62,11 @@ var Register = /** @class */ (function (_super) {
         _this.handleSubmit = _this.handleSubmit.bind(_this);
         return _this;
     }
+    Register.prototype.componentDidMount = function () {
+        if (this.props.auth.isAuthenticated) {
+            this.props.history.push("/dashboard");
+        }
+    };
     Register.prototype.componentWillReceiveProps = function (nextProps) {
         if (nextProps.errors) {
             this.setState({ errors: nextProps.errors });

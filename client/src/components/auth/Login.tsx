@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { loginUser } from "../../actions/authActions";
-import { LoginInfo, AuthInterface } from "../../types";
+import { LoginInfo, AuthInterface, Auth } from "../../types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import classnames from "classnames";
@@ -8,9 +8,7 @@ import classnames from "classnames";
 interface LoginProps {
   // registerUser(user: UserRegisterInfo, history: any): any;
   loginUser(user: LoginInfo): any;
-  auth: {
-    user: LoginInfo;
-  };
+  auth: Auth;
   errors?: any;
   history?: any;
 }
@@ -49,6 +47,12 @@ class Login extends Component<LoginProps, LoginInfo> {
 
     // console.log(user);
   };
+
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/dashboard");
+    }
+  }
 
   componentWillReceiveProps(nextProps: any) {
     console.log("nextProps :>> ", nextProps);
