@@ -45,18 +45,19 @@ class Login extends Component<LoginProps, LoginInfo> {
     const { email, password } = this.state;
     const user = { email, password };
 
-    loginUser(user, null);
+    this.props.loginUser(user, null);
 
     // console.log(user);
   };
 
   componentDidUpdate(prevProps: any) {
     if (prevProps.auth.isAuthenticated) {
+      this.props.history.push("/dashboard");
     }
   }
 
   render() {
-    const { errors } = this.state;
+    const { errors } = this.props;
 
     const baseClasses = "form-control form-control-lg";
     const invalidEmail = classnames(baseClasses, {

@@ -11,6 +11,7 @@ var jwt = require("jsonwebtoken");
 var passport = require("passport");
 var User_1 = require("../../models/User");
 var register_1 = __importDefault(require("../../validation/register"));
+var login_1 = __importDefault(require("../../validation/login"));
 // const User = require("../../models/User");
 /**
  * * GET api/users/test
@@ -61,7 +62,10 @@ router.post("/register", function (req, res) {
  * ? Log in User / Return JWT Token
  */
 router.post("/login", function (req, res) {
-    var _a = req.body, email = _a.email, password = _a.password;
+    var _a = login_1.default(req.body), errors = _a.errors, isValid = _a.isValid;
+    if (!isValid)
+        return res.status(404).json(errors);
+    var _b = req.body, email = _b.email, password = _b.password;
     User_1.User.findOne({ email: email }).then(function (user) {
         if (!user)
             return res.status(404).json({ email: "User not found" });
@@ -78,7 +82,7 @@ router.post("/login", function (req, res) {
                 });
             }
             else {
-                return res.status(400).json({ pwd: "Wrong password" });
+                return res.status(400).json({ password: "Wrong password" });
             }
         });
     });

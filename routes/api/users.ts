@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 import { User } from "../../models/User";
 import validateRegisterInput from "../../validation/register";
+import validateLoginInput from "../../validation/login";
 // const User = require("../../models/User");
 
 /**
@@ -59,6 +60,9 @@ router.post("/register", (req, res) => {
  * ? Log in User / Return JWT Token
  */
 router.post("/login", (req, res) => {
+  const { errors, isValid } = validateLoginInput(req.body);
+  if (!isValid) return res.status(404).json(errors);
+
   const { email, password } = req.body;
 
   User.findOne({ email }).then((user: any) => {
@@ -81,7 +85,7 @@ router.post("/login", (req, res) => {
           }
         );
       } else {
-        return res.status(400).json({ pwd: "Wrong password" });
+        return res.status(400).json({ password: "Wrong password" });
       }
     });
   });

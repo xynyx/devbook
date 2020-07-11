@@ -7,7 +7,7 @@ import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer.jsx";
 import Landing from "./components/layout/Landing.jsx";
 import Register from "./components/auth/Register";
-import Login from "./components/auth/Login.jsx";
+import Login from "./components/auth/Login";
 
 
 import "./App.css";

@@ -46,7 +46,7 @@ var Login = /** @class */ (function (_super) {
             e.preventDefault();
             var _a = _this.state, email = _a.email, password = _a.password;
             var user = { email: email, password: password };
-            authActions_1.loginUser(user, null);
+            _this.props.loginUser(user, null);
             // console.log(user);
         };
         _this.state = {
@@ -59,10 +59,11 @@ var Login = /** @class */ (function (_super) {
     }
     Login.prototype.componentDidUpdate = function (prevProps) {
         if (prevProps.auth.isAuthenticated) {
+            this.props.history.push("/dashboard");
         }
     };
     Login.prototype.render = function () {
-        var errors = this.state.errors;
+        var errors = this.props.errors;
         var baseClasses = "form-control form-control-lg";
         var invalidEmail = classnames_1.default(baseClasses, {
             "is-invalid": errors.email,
