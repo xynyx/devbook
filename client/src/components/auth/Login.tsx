@@ -15,13 +15,10 @@ interface LoginProps {
   history?: any;
 }
 
-const mapStateToProps = (state: AuthInterface) => {
-  console.log("state :>> ", state);
-  return ({
-    auth: state.auth,
-    errors: state.errors,
-  });
-};
+const mapStateToProps = (state: AuthInterface) => ({
+  auth: state.auth,
+  errors: state.errors,
+});
 
 // Component<Props, State>
 class Login extends Component<LoginProps, LoginInfo> {

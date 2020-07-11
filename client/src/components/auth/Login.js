@@ -27,13 +27,10 @@ var react_1 = __importStar(require("react"));
 var authActions_1 = require("../../actions/authActions");
 var react_redux_1 = require("react-redux");
 var classnames_1 = __importDefault(require("classnames"));
-var mapStateToProps = function (state) {
-    console.log("state :>> ", state);
-    return ({
-        auth: state.auth,
-        errors: state.errors,
-    });
-};
+var mapStateToProps = function (state) { return ({
+    auth: state.auth,
+    errors: state.errors,
+}); };
 // Component<Props, State>
 var Login = /** @class */ (function (_super) {
     __extends(Login, _super);

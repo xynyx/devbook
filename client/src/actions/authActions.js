@@ -48,9 +48,14 @@ exports.setCurrentUser = function (decoded) {
 // Log Out User
 exports.logoutUser = function () { return function (dispatch) {
     // Remove JWT token
-    localStorage.removeItem("jwtToken");
-    // Delete Authorization header with the token
-    setAuthToken_1.default(false);
-    // Set {} for user => isAuthorized set to false (see AuthReducer)
-    dispatch(exports.setCurrentUser({}));
+    try {
+        localStorage.removeItem("jwtToken");
+        // Delete Authorization header with the token
+        setAuthToken_1.default(false);
+        // Set {} for user => isAuthorized set to false (see AuthReducer)
+        dispatch(exports.setCurrentUser({}));
+    }
+    catch (_a) {
+        console.log("Logout Failed");
+    }
 }; };

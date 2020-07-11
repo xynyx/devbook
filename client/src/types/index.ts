@@ -3,17 +3,21 @@ export interface UserRegisterInfo {
   email: string;
   password: string;
   errors?: any;
+  avatar?: string;
 }
 
 export interface LoginInfo {
   email: string;
   password: string;
-  errors?: any}
+  errors?: any;
+}
 
 export interface AuthInterface {
-  auth: {
-    isAuthenticated: boolean,
-    user: UserRegisterInfo
-  }
-  errors?: any
+  auth: Auth;
+  errors?: any;
+}
+
+export interface Auth {
+  isAuthenticated: boolean;
+  user: UserRegisterInfo;
 }
