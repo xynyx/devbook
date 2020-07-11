@@ -8,10 +8,12 @@ export interface UserRegisterInfo {
 export interface LoginInfo {
   email: string;
   password: string;
-  errors?: any;
-}
+  errors?: any}
 
 export interface AuthInterface {
-  auth: boolean;
-  errors: any;
+  auth: {
+    isAuthenticated: boolean,
+    user: UserRegisterInfo
+  }
+  errors?: any
 }

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { loginUser } from "../../actions/authActions";
 import { LoginInfo, AuthInterface } from "../../types";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import classnames from "classnames";
 
 interface LoginProps {
   // registerUser(user: UserRegisterInfo, history: any): any;
@@ -25,7 +27,7 @@ class Login extends Component<LoginProps, LoginInfo> {
     this.state = {
       email: "",
       password: "",
-      errors: {},
+      // errors: {},
       // password2: ""
     };
 
@@ -48,7 +50,22 @@ class Login extends Component<LoginProps, LoginInfo> {
     // console.log(user);
   };
 
+  componentDidUpdate(prevProps: any) {
+    if (prevProps.auth.isAuthenticated) {
+    }
+  }
+
   render() {
+    const { errors } = this.state;
+
+    const baseClasses = "form-control form-control-lg";
+    const invalidEmail = classnames(baseClasses, {
+      "is-invalid": errors.email,
+    });
+    const invalidPassword = classnames(baseClasses, {
+      "is-invalid": errors.password,
+    });
+
     return (
       <div className="login">
         <div className="container">
@@ -62,22 +79,28 @@ class Login extends Component<LoginProps, LoginInfo> {
                 <div className="form-group">
                   <input
                     type="email"
-                    className="form-control form-control-lg"
+                    className={invalidEmail}
                     placeholder="Email Address"
                     name="email"
                     value={this.state.email}
                     onChange={this.handleInputChange}
                   />
+                  {errors.email && (
+                    <div className="invalid-feedback">{errors.email}</div>
+                  )}
                 </div>
                 <div className="form-group">
                   <input
                     type="password"
-                    className="form-control form-control-lg"
+                    className={invalidPassword}
                     placeholder="Password"
                     name="password"
                     value={this.state.password}
                     onChange={this.handleInputChange}
-                  />
+                  />{" "}
+                  {errors.password && (
+                    <div className="invalid-feedback">{errors.password}</div>
+                  )}
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
@@ -89,4 +112,6 @@ class Login extends Component<LoginProps, LoginInfo> {
   }
 }
 
-export default connect(null, { loginUser })(Login);
+// Remember -> connect allows this component to have access to the store/state!
+// mapStateToProps converts the state to props that are then passed down
+export default connect(mapStateToProps, { loginUser })(withRouter(Login));
