@@ -12,13 +12,13 @@ interface UserRegisterInfo {
 }
 
 interface RegisterProps {
-  registerUser: any;
+  registerUser(user: UserRegisterInfo): any;
   auth: {
     user: UserRegisterInfo;
   };
 }
 
-// Components<Props, State>
+// Component<Props, State>
 class Register extends Component<RegisterProps, UserRegisterInfo> {
   constructor(props: RegisterProps) {
     super(props);

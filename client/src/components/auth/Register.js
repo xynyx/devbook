@@ -27,7 +27,7 @@ var react_1 = __importStar(require("react"));
 var classnames_1 = __importDefault(require("classnames"));
 var react_redux_1 = require("react-redux");
 var authActions_1 = require("../../actions/authActions");
-// Components<Props, State>
+// Component<Props, State>
 var Register = /** @class */ (function (_super) {
     __extends(Register, _super);
     function Register(props) {
