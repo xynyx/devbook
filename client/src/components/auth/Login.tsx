@@ -1,9 +1,27 @@
 import React, { Component } from "react";
-import { loginUser } from "../../actions/authActions"
+import { loginUser } from "../../actions/authActions";
+import { LoginInfo, AuthInterface } from "../../types";
+import { connect } from "react-redux";
 
-export default class Login extends Component {
-  constructor() {
-    super();
+interface LoginProps {
+  // registerUser(user: UserRegisterInfo, history: any): any;
+  loginUser(user: LoginInfo, history: any): any;
+  auth: {
+    user: LoginInfo;
+  };
+  errors?: any;
+  history?: any;
+}
+
+const mapStateToProps = (state: AuthInterface) => ({
+  auth: state.auth,
+  errors: state.errors,
+});
+
+// Component<Props, State>
+class Login extends Component<LoginProps, LoginInfo> {
+  constructor(props: LoginProps) {
+    super(props);
     this.state = {
       email: "",
       password: "",
@@ -15,20 +33,19 @@ export default class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  handleInputChange = (e: any) => {
+    this.setState({ [e.target.name]: e.target.value } as any);
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e: any) => {
     //password2
     e.preventDefault();
     const { email, password } = this.state;
     const user = { email, password };
 
-    loginUser(user, null)
+    loginUser(user, null);
 
     // console.log(user);
-
   };
 
   render() {
@@ -71,3 +88,5 @@ export default class Login extends Component {
     );
   }
 }
+
+export default connect(null, { loginUser })(Login);

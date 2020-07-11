@@ -8,4 +8,10 @@ export interface UserRegisterInfo {
 export interface LoginInfo {
   email: string;
   password: string;
+  errors?: any;
+}
+
+export interface AuthInterface {
+  auth: boolean;
+  errors: any;
 }

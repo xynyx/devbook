@@ -4,25 +4,19 @@ import classnames from "classnames";
 import axios from "axios";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
-
-interface UserRegisterInfo {
-  name: string;
-  email: string;
-  password: string;
-  errors?: any;
-}
+import { UserRegisterInfo, AuthInterface } from "../../types";
 
 interface RegisterProps {
   registerUser(user: UserRegisterInfo, history: any): any;
   auth: {
     user: UserRegisterInfo;
   };
-  errors: any,
-  history: any
+  errors?: any;
+  history?: any;
 }
 
-// Takes in state -> convert to props to pass to the component / Redux 
-const mapStateToProps = (state: any) => ({
+// Takes in state -> convert to props to pass to the component / Redux
+const mapStateToProps = (state: AuthInterface) => ({
   auth: state.auth,
   errors: state.errors,
 });
@@ -37,7 +31,7 @@ class Register extends Component<RegisterProps, UserRegisterInfo> {
       password: "",
       errors: {},
       // password2: ""
-    };
+    } as UserRegisterInfo;
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -147,6 +141,6 @@ class Register extends Component<RegisterProps, UserRegisterInfo> {
   }
 }
 
-// withRouter, which is a HOC, gives you access to the history object and the closest <Route> match 
+// withRouter, which is a HOC, gives you access to the history object and the closest <Route> match
 // Passes 'match, location, history' props to the wrapped component whenever it renders
 export default connect(mapStateToProps, { registerUser })(withRouter(Register));

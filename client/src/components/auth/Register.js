@@ -28,7 +28,7 @@ var react_router_dom_1 = require("react-router-dom");
 var classnames_1 = __importDefault(require("classnames"));
 var react_redux_1 = require("react-redux");
 var authActions_1 = require("../../actions/authActions");
-// Takes in state -> convert to props to pass to the component / Redux 
+// Takes in state -> convert to props to pass to the component / Redux
 var mapStateToProps = function (state) { return ({
     auth: state.auth,
     errors: state.errors,
@@ -101,6 +101,6 @@ var Register = /** @class */ (function (_super) {
     };
     return Register;
 }(react_1.Component));
-// withRouter, which is a HOC, gives you access to the history object and the closest <Route> match 
+// withRouter, which is a HOC, gives you access to the history object and the closest <Route> match
 // Passes 'match, location, history' props to the wrapped component whenever it renders
 exports.default = react_redux_1.connect(mapStateToProps, { registerUser: authActions_1.registerUser })(react_router_dom_1.withRouter(Register));
