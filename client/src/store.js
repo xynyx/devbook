@@ -6,9 +6,9 @@ const middleware = [thunk];
 
 const initialState = {};
 
-// createStore(reducer, [preloadedState], [enhancer])
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
+// createStore(reducer, [preloadedState], [enhancer])
 const store = createStore(
   rootReducer,
   initialState,

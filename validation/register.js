@@ -25,4 +25,3 @@ function validateRegisterInput(data) {
     return { errors: errors, isValid: Object.keys(errors).length === 0 };
 }
 exports.default = validateRegisterInput;
-//# sourceMappingURL=register.js.map

@@ -246,4 +246,3 @@ router.delete("/", passport.authenticate("jwt", { session: false }), function (r
         .catch(function (err) { return res.status(404).json(err); });
 });
 module.exports = router;
-//# sourceMappingURL=profile.js.map

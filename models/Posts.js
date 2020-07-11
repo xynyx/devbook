@@ -53,4 +53,3 @@ var PostSchema = new Schema({
     ],
 });
 exports.Post = mongoose.model("posts", PostSchema);
-//# sourceMappingURL=Posts.js.map

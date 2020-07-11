@@ -13,4 +13,3 @@ function validatePostInput(data) {
     return { errors: errors, isValid: Object.keys(errors).length === 0 };
 }
 exports.default = validatePostInput;
-//# sourceMappingURL=post.js.map

@@ -169,4 +169,3 @@ router.delete("/comment/:id/:comment_id", passport.authenticate("jwt", { session
         .catch(function (err) { return res.status(404).json("Post not found."); });
 });
 module.exports = router;
-//# sourceMappingURL=posts.js.map

@@ -23,4 +23,3 @@ function validateEducationInput(data) {
     return { errors: errors, isValid: Object.keys(errors).length === 0 };
 }
 exports.default = validateEducationInput;
-//# sourceMappingURL=education.js.map

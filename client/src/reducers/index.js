@@ -8,4 +8,3 @@ var auth_1 = __importDefault(require("./auth"));
 exports.default = redux_1.combineReducers({
     auth: auth_1.default
 });
-//# sourceMappingURL=index.js.map

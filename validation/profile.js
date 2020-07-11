@@ -47,4 +47,3 @@ function validateProfileInput(data) {
     return { errors: errors, isValid: Object.keys(errors).length === 0 };
 }
 exports.default = validateProfileInput;
-//# sourceMappingURL=profile.js.map
