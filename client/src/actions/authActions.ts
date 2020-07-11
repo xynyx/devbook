@@ -2,7 +2,7 @@ import axios from "axios";
 import setAuthToken from "../helpers/setAuthToken";
 import { LoginInfo } from "../types";
 import { SET_ERRORS, SET_USER } from "./types";
-import jwt_decode from "jwt-decode";
+import jwt_decode from "jwt_decode";
 // CLOSURE
 /* This is the same as:
 function registerUser(userData, history) {

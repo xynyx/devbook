@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
 var setAuthToken_1 = __importDefault(require("../helpers/setAuthToken"));
 var types_1 = require("./types");
-var jwt_decode_1 = __importDefault(require("jwt-decode"));
+var jwt_decode_1 = __importDefault(require("jwt_decode"));
 // CLOSURE
 /* This is the same as:
 function registerUser(userData, history) {
