@@ -46,13 +46,7 @@ class Register extends Component<RegisterProps, UserRegisterInfo> {
     const newUser = { name, email, password };
 
     this.props.registerUser(newUser);
-    // axios
-    //   .post("/api/users/register", newUser)
-    //   .then(res => {
-    //     console.log("res.data :>> ", res.data);
-    //   })
-    //   // err.response.data to actually get the object of errors
-    //   .catch(err => this.setState({ errors: err.response.data }));
+  
   };
 
   render() {

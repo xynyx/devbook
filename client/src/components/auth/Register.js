@@ -43,13 +43,6 @@ var Register = /** @class */ (function (_super) {
             var _a = _this.state, name = _a.name, email = _a.email, password = _a.password;
             var newUser = { name: name, email: email, password: password };
             _this.props.registerUser(newUser);
-            // axios
-            //   .post("/api/users/register", newUser)
-            //   .then(res => {
-            //     console.log("res.data :>> ", res.data);
-            //   })
-            //   // err.response.data to actually get the object of errors
-            //   .catch(err => this.setState({ errors: err.response.data }));
         };
         _this.state = {
             name: "",
