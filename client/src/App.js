@@ -2,13 +2,13 @@ import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
-import jwt_decode from "jwt_decode";
+import jwt_decode from "jwt-decode";
 import { setCurrentUser } from "./actions/authActions";
 import setAuthToken from "./helpers/setAuthToken";
 
 import Navbar from "./components/layout/Navbar";
-import Footer from "./components/layout/Footer.jsx";
-import Landing from "./components/layout/Landing.jsx";
+import Footer from "./components/layout/Footer";
+import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 

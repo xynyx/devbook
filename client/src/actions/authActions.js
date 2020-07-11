@@ -6,14 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
 var setAuthToken_1 = __importDefault(require("../helpers/setAuthToken"));
 var types_1 = require("./types");
-var jwt_decode_1 = __importDefault(require("jwt_decode"));
+var jwt_decode_1 = __importDefault(require("jwt-decode"));
 // CLOSURE
 /* This is the same as:
 function registerUser(userData, history) {
   return function (dispatch) {}
 }
 */
-// Allows thunk middleware to dispatch
 exports.registerUser = function (userData, history) { return function (dispatch) {
     axios_1.default
         .post("/api/users/register", userData)
@@ -24,21 +23,18 @@ exports.registerUser = function (userData, history) { return function (dispatch)
     });
 }; };
 exports.loginUser = function (userData) { return function (dispatch) {
-    console.log("HERE");
-    axios_1.default.post("/api/users/login", userData).then(function (res) {
-        console.log("res", res);
+    axios_1.default
+        .post("/api/users/login", userData)
+        .then(function (res) {
         // Save JWT to localStorage
         var token = res.data.token;
-        console.log("token", token);
         localStorage.setItem("jwtToken", token);
         // Set token to Authorization header to allow user access to protected routes
         setAuthToken_1.default(token);
         var decoded = jwt_decode_1.default(token);
-        console.log("test", decoded);
         dispatch(exports.setCurrentUser(decoded));
     })
         .catch(function (err) {
-        console.log('err.response', err.response);
         dispatch({ type: types_1.SET_ERRORS, payload: err.response.data });
     });
 }; };
@@ -49,3 +45,12 @@ exports.setCurrentUser = function (decoded) {
         payload: decoded,
     };
 };
+// Log Out User
+exports.logoutUser = function () { return function (dispatch) {
+    // Remove JWT token
+    localStorage.removeItem("jwtToken");
+    // Delete Authorization header with the token
+    setAuthToken_1.default(false);
+    // Set {} for user => isAuthorized set to false (see AuthReducer)
+    dispatch(exports.setCurrentUser({}));
+}; };
