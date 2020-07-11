@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { loginUser } from "../../actions/authActions"
 
 export default class Login extends Component {
   constructor() {
@@ -24,7 +25,10 @@ export default class Login extends Component {
     const { email, password } = this.state;
     const user = { email, password };
 
-    console.log(user);
+    loginUser(user, null)
+
+    // console.log(user);
+
   };
 
   render() {
