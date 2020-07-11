@@ -10,6 +10,8 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "@types/react": "^16.9.42",
+    "@types/react-redux": "^7.1.9",
     "@types/react-router": "^5.1.8",
     "axios": "^0.19.2",
     "classnames": "^2.2.6",

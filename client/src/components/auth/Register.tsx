@@ -4,9 +4,24 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
 
-class Register extends Component {
-  constructor() {
-    super();
+interface UserRegisterInfo {
+  name: string;
+  email: string;
+  password: string;
+  errors?: any;
+}
+
+interface RegisterProps {
+  registerUser(user: any): object;
+  auth: {
+    user: UserRegisterInfo;
+  };
+}
+
+// Components<Props, State>
+class Register extends Component<RegisterProps, UserRegisterInfo> {
+  constructor(props: RegisterProps) {
+    super(props);
     this.state = {
       name: "",
       email: "",
@@ -19,11 +34,12 @@ class Register extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  handleInputChange = (e: any) => {
+    this.setState({ [e.target.name]: e.target.value } as UserRegisterInfo);
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e: any) => {
+    console.log("e", e);
     //password2
     e.preventDefault();
     const { name, email, password } = this.state;
@@ -41,6 +57,8 @@ class Register extends Component {
 
   render() {
     const { errors } = this.state;
+    const { user } = this.props.auth;
+
     const baseClasses = "form-control form-control-lg";
     const invalidName = classnames(baseClasses, {
       "is-invalid": errors.name,
@@ -54,6 +72,7 @@ class Register extends Component {
 
     return (
       <div className="register">
+        {user ? user.name : null}
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
@@ -125,4 +144,9 @@ class Register extends Component {
   }
 }
 
-export default connect(null, { registerUser })(Register);
+// Takes in state
+const mapStateToProps = (state: { auth: any }) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { registerUser })(Register);
