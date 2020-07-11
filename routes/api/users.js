@@ -28,7 +28,8 @@ router.post("/register", function (req, res) {
         return res.status(404).json(errors);
     User_1.User.findOne({ email: req.body.email }).then(function (user) {
         if (user) {
-            return res.status(400).json({ email: "Email already exists" });
+            errors.email = "Email already exists";
+            return res.status(400).json(errors);
         }
         else {
             var avatar = gravatar.url(req.body.email, {
@@ -67,8 +68,10 @@ router.post("/login", function (req, res) {
         return res.status(404).json(errors);
     var _b = req.body, email = _b.email, password = _b.password;
     User_1.User.findOne({ email: email }).then(function (user) {
-        if (!user)
-            return res.status(404).json({ email: "User not found" });
+        if (!user) {
+            errors.email = "User not found";
+            return res.status(404).json(errors);
+        }
         //Check Password
         bcrypt.compare(password, user.password).then(function (authenticated) {
             if (authenticated) {
@@ -78,11 +81,12 @@ router.post("/login", function (req, res) {
                 var payload = { id: id, name: name_1, avatar: avatar };
                 jwt.sign(payload, process.env.SECRET, { expiresIn: "4h" }, function (err, token) {
                     // Token is then later sent as a header to validate user
-                    res.json({ success: true, token: "Bearer " + token });
+                    res.json({ success: true, token: token });
                 });
             }
             else {
-                return res.status(400).json({ password: "Wrong password" });
+                errors.password = "Wrong password";
+                return res.status(400).json(errors);
             }
         });
     });

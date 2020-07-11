@@ -62,6 +62,11 @@ var Register = /** @class */ (function (_super) {
         _this.handleSubmit = _this.handleSubmit.bind(_this);
         return _this;
     }
+    Register.prototype.componentWillReceiveProps = function (nextProps) {
+        if (nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
+        }
+    };
     Register.prototype.render = function () {
         var errors = this.props.errors;
         var user = this.props.auth.user;

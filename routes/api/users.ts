@@ -26,7 +26,8 @@ router.post("/register", (req, res) => {
 
   User.findOne({ email: req.body.email }).then((user: string) => {
     if (user) {
-      return res.status(400).json({ email: "Email already exists" });
+      errors.email = "Email already exists"
+      return res.status(400).json(errors);
     } else {
       const avatar = gravatar.url(req.body.email, {
         s: "200", // Size
@@ -48,7 +49,7 @@ router.post("/register", (req, res) => {
             .then((user: any) => {
               res.json(user);
             })
-            .catch((err: string) => console.log(err));
+            .catch((err: any) => console.log(err));
         });
       });
     }
@@ -66,12 +67,15 @@ router.post("/login", (req, res) => {
   const { email, password } = req.body;
 
   User.findOne({ email }).then((user: any) => {
-    if (!user) return res.status(404).json({ email: "User not found" });
+    if (!user) {
+      errors.email = "User not found";
+      return res.status(404).json(errors);
+    }
 
     //Check Password
     bcrypt.compare(password, user.password).then((authenticated: boolean) => {
       if (authenticated) {
-        // Sign Token - take in info; expiration
+                // Sign Token - take in info; expiration
         const { id, name, avatar } = user;
         // JWT Payload
         const payload = { id, name, avatar };
@@ -81,11 +85,12 @@ router.post("/login", (req, res) => {
           { expiresIn: "4h" },
           (err: string, token: string) => {
             // Token is then later sent as a header to validate user
-            res.json({ success: true, token: "Bearer " + token });
+            res.json({ success: true, token });
           }
         );
       } else {
-        return res.status(400).json({ password: "Wrong password" });
+        errors.password = "Wrong password";
+        return res.status(400).json(errors);
       }
     });
   });

@@ -7,7 +7,7 @@ import classnames from "classnames";
 
 interface LoginProps {
   // registerUser(user: UserRegisterInfo, history: any): any;
-  loginUser(user: LoginInfo, history: any): any;
+  loginUser(user: LoginInfo): any;
   auth: {
     user: LoginInfo;
   };
@@ -15,10 +15,13 @@ interface LoginProps {
   history?: any;
 }
 
-const mapStateToProps = (state: AuthInterface) => ({
-  auth: state.auth,
-  errors: state.errors,
-});
+const mapStateToProps = (state: AuthInterface) => {
+  console.log("state :>> ", state);
+  return ({
+    auth: state.auth,
+    errors: state.errors,
+  });
+};
 
 // Component<Props, State>
 class Login extends Component<LoginProps, LoginInfo> {
@@ -27,7 +30,7 @@ class Login extends Component<LoginProps, LoginInfo> {
     this.state = {
       email: "",
       password: "",
-      // errors: {},
+      errors: {},
       // password2: ""
     };
 
@@ -45,19 +48,23 @@ class Login extends Component<LoginProps, LoginInfo> {
     const { email, password } = this.state;
     const user = { email, password };
 
-    this.props.loginUser(user, null);
+    this.props.loginUser(user);
 
     // console.log(user);
   };
 
-  componentDidUpdate(prevProps: any) {
-    if (prevProps.auth.isAuthenticated) {
+  componentWillReceiveProps(nextProps: any) {
+    console.log("nextProps :>> ", nextProps);
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+    if (nextProps.auth.isAuthenticated) {
       this.props.history.push("/dashboard");
     }
   }
 
   render() {
-    const { errors } = this.props;
+    const { errors } = this.state;
 
     const baseClasses = "form-control form-control-lg";
     const invalidEmail = classnames(baseClasses, {
@@ -76,7 +83,7 @@ class Login extends Component<LoginProps, LoginInfo> {
               <p className="lead text-center">
                 Sign in to your DevBook account
               </p>
-              <form onSubmit={this.handleSubmit}>
+              <form noValidate onSubmit={this.handleSubmit}>
                 <div className="form-group">
                   <input
                     type="email"
@@ -115,4 +122,4 @@ class Login extends Component<LoginProps, LoginInfo> {
 
 // Remember -> connect allows this component to have access to the store/state!
 // mapStateToProps converts the state to props that are then passed down
-export default connect(mapStateToProps, { loginUser })(withRouter(Login));
+export default connect(mapStateToProps, { loginUser })(Login);

@@ -26,12 +26,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 var authActions_1 = require("../../actions/authActions");
 var react_redux_1 = require("react-redux");
-var react_router_dom_1 = require("react-router-dom");
 var classnames_1 = __importDefault(require("classnames"));
-var mapStateToProps = function (state) { return ({
-    auth: state.auth,
-    errors: state.errors,
-}); };
+var mapStateToProps = function (state) {
+    console.log("state :>> ", state);
+    return ({
+        auth: state.auth,
+        errors: state.errors,
+    });
+};
 // Component<Props, State>
 var Login = /** @class */ (function (_super) {
     __extends(Login, _super);
@@ -46,24 +48,29 @@ var Login = /** @class */ (function (_super) {
             e.preventDefault();
             var _a = _this.state, email = _a.email, password = _a.password;
             var user = { email: email, password: password };
-            _this.props.loginUser(user, null);
+            _this.props.loginUser(user);
             // console.log(user);
         };
         _this.state = {
             email: "",
             password: "",
+            errors: {},
         };
         _this.handleInputChange = _this.handleInputChange.bind(_this);
         _this.handleSubmit = _this.handleSubmit.bind(_this);
         return _this;
     }
-    Login.prototype.componentDidUpdate = function (prevProps) {
-        if (prevProps.auth.isAuthenticated) {
+    Login.prototype.componentWillReceiveProps = function (nextProps) {
+        console.log("nextProps :>> ", nextProps);
+        if (nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
+        }
+        if (nextProps.auth.isAuthenticated) {
             this.props.history.push("/dashboard");
         }
     };
     Login.prototype.render = function () {
-        var errors = this.props.errors;
+        var errors = this.state.errors;
         var baseClasses = "form-control form-control-lg";
         var invalidEmail = classnames_1.default(baseClasses, {
             "is-invalid": errors.email,
@@ -77,7 +84,7 @@ var Login = /** @class */ (function (_super) {
                     react_1.default.createElement("div", { className: "col-md-8 m-auto" },
                         react_1.default.createElement("h1", { className: "display-4 text-center" }, "Log In"),
                         react_1.default.createElement("p", { className: "lead text-center" }, "Sign in to your DevBook account"),
-                        react_1.default.createElement("form", { onSubmit: this.handleSubmit },
+                        react_1.default.createElement("form", { noValidate: true, onSubmit: this.handleSubmit },
                             react_1.default.createElement("div", { className: "form-group" },
                                 react_1.default.createElement("input", { type: "email", className: invalidEmail, placeholder: "Email Address", name: "email", value: this.state.email, onChange: this.handleInputChange }),
                                 errors.email && (react_1.default.createElement("div", { className: "invalid-feedback" }, errors.email))),
@@ -91,4 +98,4 @@ var Login = /** @class */ (function (_super) {
 }(react_1.Component));
 // Remember -> connect allows this component to have access to the store/state!
 // mapStateToProps converts the state to props that are then passed down
-exports.default = react_redux_1.connect(mapStateToProps, { loginUser: authActions_1.loginUser })(react_router_dom_1.withRouter(Login));
+exports.default = react_redux_1.connect(mapStateToProps, { loginUser: authActions_1.loginUser })(Login);

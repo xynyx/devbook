@@ -53,6 +53,12 @@ class Register extends Component<RegisterProps, UserRegisterInfo> {
     this.props.registerUser(newUser, this.props.history);
   };
 
+  componentWillReceiveProps(nextProps: any) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   render() {
     const { errors } = this.props;
     const { user } = this.props.auth;
