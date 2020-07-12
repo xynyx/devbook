@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { loginUser } from "../../actions/authActions";
 import { LoginInfo, AuthInterface, Auth } from "../../types";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
 import classnames from "classnames";
+import TextField from "../common/TextField";
 
 interface LoginProps {
   // registerUser(user: UserRegisterInfo, history: any): any;
@@ -85,32 +85,23 @@ class Login extends Component<LoginProps, LoginInfo> {
                 Sign in to your DevBook account
               </p>
               <form noValidate onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                  <input
-                    type="email"
-                    className={invalidEmail}
-                    placeholder="Email Address"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.handleInputChange}
-                  />
-                  {errors.email && (
-                    <div className="invalid-feedback">{errors.email}</div>
-                  )}
-                </div>
-                <div className="form-group">
-                  <input
-                    type="password"
-                    className={invalidPassword}
-                    placeholder="Password"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.handleInputChange}
-                  />{" "}
-                  {errors.password && (
-                    <div className="invalid-feedback">{errors.password}</div>
-                  )}
-                </div>
+                <TextField
+                  placeholder="Email"
+                  name="email"
+                  type="email"
+                  value={this.state.email}
+                  onChange={this.handleInputChange}
+                  error={errors.email}
+                />
+
+                <TextField
+                  placeholder="Password"
+                  name="password"
+                  type="password"
+                  value={this.state.password}
+                  onChange={this.handleInputChange}
+                  error={errors.password}
+                />
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
             </div>

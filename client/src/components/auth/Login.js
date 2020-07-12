@@ -27,6 +27,7 @@ var react_1 = __importStar(require("react"));
 var authActions_1 = require("../../actions/authActions");
 var react_redux_1 = require("react-redux");
 var classnames_1 = __importDefault(require("classnames"));
+var TextField_1 = __importDefault(require("../common/TextField"));
 var mapStateToProps = function (state) { return ({
     auth: state.auth,
     errors: state.errors,
@@ -87,13 +88,8 @@ var Login = /** @class */ (function (_super) {
                         react_1.default.createElement("h1", { className: "display-4 text-center" }, "Log In"),
                         react_1.default.createElement("p", { className: "lead text-center" }, "Sign in to your DevBook account"),
                         react_1.default.createElement("form", { noValidate: true, onSubmit: this.handleSubmit },
-                            react_1.default.createElement("div", { className: "form-group" },
-                                react_1.default.createElement("input", { type: "email", className: invalidEmail, placeholder: "Email Address", name: "email", value: this.state.email, onChange: this.handleInputChange }),
-                                errors.email && (react_1.default.createElement("div", { className: "invalid-feedback" }, errors.email))),
-                            react_1.default.createElement("div", { className: "form-group" },
-                                react_1.default.createElement("input", { type: "password", className: invalidPassword, placeholder: "Password", name: "password", value: this.state.password, onChange: this.handleInputChange }),
-                                " ",
-                                errors.password && (react_1.default.createElement("div", { className: "invalid-feedback" }, errors.password))),
+                            react_1.default.createElement(TextField_1.default, { placeholder: "Email", name: "email", type: "email", value: this.state.email, onChange: this.handleInputChange, error: errors.email }),
+                            react_1.default.createElement(TextField_1.default, { placeholder: "Password", name: "password", type: "password", value: this.state.password, onChange: this.handleInputChange, error: errors.password }),
                             react_1.default.createElement("input", { type: "submit", className: "btn btn-info btn-block mt-4" })))))));
     };
     return Login;

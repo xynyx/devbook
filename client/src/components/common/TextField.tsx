@@ -4,7 +4,7 @@ import classnames from "classnames";
 interface TextFieldInterface {
   name: string;
   value: string;
-  onChange(): any;
+  onChange(e: any): any;
   type: string;
   placeholder?: string;
   label?: string;
