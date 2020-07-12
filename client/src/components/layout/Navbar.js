@@ -24,6 +24,7 @@ var react_1 = __importStar(require("react"));
 var react_router_dom_1 = require("react-router-dom");
 var react_redux_1 = require("react-redux");
 var authActions_1 = require("../../actions/authActions");
+var profileActions_1 = require("../../actions/profileActions");
 var Navbar = /** @class */ (function (_super) {
     __extends(Navbar, _super);
     function Navbar() {
@@ -31,10 +32,11 @@ var Navbar = /** @class */ (function (_super) {
     }
     Navbar.prototype.handleLogout = function (e) {
         e.preventDefault();
+        this.props.clearProfileOnLogout();
         this.props.logoutUser();
     };
     Navbar.prototype.render = function () {
-        console.log('this.props :>> ', this.props);
+        console.log("this.props :>> ", this.props);
         var _a = this.props.auth, isAuthenticated = _a.isAuthenticated, user = _a.user;
         var authorizedLinks = (react_1.default.createElement("ul", { className: "navbar-nav ml-auto" },
             react_1.default.createElement("li", { className: "nav-item" },
@@ -65,4 +67,4 @@ var Navbar = /** @class */ (function (_super) {
 var mapStateToProps = function (state) { return ({
     auth: state.auth,
 }); };
-exports.default = react_redux_1.connect(mapStateToProps, { logoutUser: authActions_1.logoutUser })(Navbar);
+exports.default = react_redux_1.connect(mapStateToProps, { logoutUser: authActions_1.logoutUser, clearProfileOnLogout: profileActions_1.clearProfileOnLogout })(Navbar);

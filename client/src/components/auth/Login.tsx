@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { loginUser } from "../../actions/authActions";
 import { LoginInfo, AuthInterface, Auth } from "../../types";
 import { connect } from "react-redux";
-import classnames from "classnames";
 import TextField from "../common/TextField";
 
 interface LoginProps {
@@ -66,14 +65,6 @@ class Login extends Component<LoginProps, LoginInfo> {
 
   render() {
     const { errors } = this.state;
-
-    const baseClasses = "form-control form-control-lg";
-    const invalidEmail = classnames(baseClasses, {
-      "is-invalid": errors.email,
-    });
-    const invalidPassword = classnames(baseClasses, {
-      "is-invalid": errors.password,
-    });
 
     return (
       <div className="login">

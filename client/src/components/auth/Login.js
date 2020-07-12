@@ -26,7 +26,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 var authActions_1 = require("../../actions/authActions");
 var react_redux_1 = require("react-redux");
-var classnames_1 = __importDefault(require("classnames"));
 var TextField_1 = __importDefault(require("../common/TextField"));
 var mapStateToProps = function (state) { return ({
     auth: state.auth,
@@ -74,13 +73,6 @@ var Login = /** @class */ (function (_super) {
     };
     Login.prototype.render = function () {
         var errors = this.state.errors;
-        var baseClasses = "form-control form-control-lg";
-        var invalidEmail = classnames_1.default(baseClasses, {
-            "is-invalid": errors.email,
-        });
-        var invalidPassword = classnames_1.default(baseClasses, {
-            "is-invalid": errors.password,
-        });
         return (react_1.default.createElement("div", { className: "login" },
             react_1.default.createElement("div", { className: "container" },
                 react_1.default.createElement("div", { className: "row" },

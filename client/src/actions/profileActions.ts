@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SET_PROFILE, PROFILE_LOADING, SET_ERRORS } from "./types";
+import { SET_PROFILE, PROFILE_LOADING, SET_ERRORS, CLEAR_CURRENT_PROFILE } from "./types";
 
 export const getCurrentProfile = () => (dispatch: any) => {
   dispatch(setProfileLoading());
@@ -23,5 +23,11 @@ export const getCurrentProfile = () => (dispatch: any) => {
 export const setProfileLoading = () => {
   return {
     type: PROFILE_LOADING,
+  };
+};
+
+export const clearProfileOnLogout = () => {
+  return {
+    type: CLEAR_CURRENT_PROFILE,
   };
 };

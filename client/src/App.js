@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import jwt_decode from "jwt-decode";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
+import { clearProfileOnLogout } from "./actions/profileActions";
 import setAuthToken from "./helpers/setAuthToken";
 
 import Navbar from "./components/layout/Navbar";
@@ -11,6 +12,7 @@ import Footer from "./components/layout/Footer";
 import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
+import Dashboard from "./components/dashboard/Dashboard";
 
 import "./App.css";
 
@@ -26,6 +28,8 @@ if (token) {
   const decoded = jwt_decode(token);
   // Set user and isAuthenticated to true
   store.dispatch(setCurrentUser(decoded));
+
+  store.dispatch(clearProfileOnLogout());
 
   const currentTime = Date.now() / 1000;
   if (decoded.exp < currentTime) {
@@ -46,6 +50,7 @@ function App() {
           <div className="container">
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/dashboard" component={Dashboard} />
           </div>
           <Footer />
         </div>

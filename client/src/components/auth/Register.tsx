@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import classnames from "classnames";
-import axios from "axios";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
 import { UserRegisterInfo, AuthInterface, Auth } from "../../types";

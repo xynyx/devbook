@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
+import { clearProfileOnLogout } from "../../actions/profileActions";
 import { Auth, AuthInterface } from "../../types";
 interface NavbarPropInterface {
   logoutUser(): any;
@@ -11,11 +12,12 @@ interface NavbarPropInterface {
 class Navbar extends Component<any> {
   handleLogout(e: any) {
     e.preventDefault();
+    this.props.clearProfileOnLogout();
     this.props.logoutUser();
   }
 
   render() {
-    console.log('this.props :>> ', this.props);
+    console.log("this.props :>> ", this.props);
     const { isAuthenticated, user } = this.props.auth;
 
     const authorizedLinks = (
@@ -90,4 +92,6 @@ const mapStateToProps = (state: AuthInterface) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { logoutUser })(Navbar);
+export default connect(mapStateToProps, { logoutUser, clearProfileOnLogout })(
+  Navbar
+);

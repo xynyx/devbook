@@ -28,3 +28,8 @@ exports.setProfileLoading = function () {
         type: types_1.PROFILE_LOADING,
     };
 };
+exports.clearProfileOnLogout = function () {
+    return {
+        type: types_1.CLEAR_CURRENT_PROFILE,
+    };
+};
