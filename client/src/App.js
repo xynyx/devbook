@@ -7,6 +7,8 @@ import { setCurrentUser, logoutUser } from "./actions/authActions";
 import { clearProfileOnLogout } from "./actions/profileActions";
 import setAuthToken from "./helpers/setAuthToken";
 
+import PrivateRoute from "./components/common/PrivateRoute";
+
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import Landing from "./components/layout/Landing";
@@ -50,7 +52,7 @@ function App() {
           <div className="container">
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/dashboard" component={Dashboard} />
+              <PrivateRoute exact path="/dashboard" component={Dashboard} />
           </div>
           <Footer />
         </div>
