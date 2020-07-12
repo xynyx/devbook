@@ -25,9 +25,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 var react_router_dom_1 = require("react-router-dom");
-var classnames_1 = __importDefault(require("classnames"));
 var react_redux_1 = require("react-redux");
 var authActions_1 = require("../../actions/authActions");
+var TextField_1 = __importDefault(require("../common/TextField"));
 // Takes in states -> convert to props to pass to the component / Redux
 var mapStateToProps = function (state) { return ({
     auth: state.auth,
@@ -75,16 +75,6 @@ var Register = /** @class */ (function (_super) {
     Register.prototype.render = function () {
         var errors = this.props.errors;
         var user = this.props.auth.user;
-        var baseClasses = "form-control form-control-lg";
-        var invalidName = classnames_1.default(baseClasses, {
-            "is-invalid": errors.name,
-        });
-        var invalidEmail = classnames_1.default(baseClasses, {
-            "is-invalid": errors.email,
-        });
-        var invalidPassword = classnames_1.default(baseClasses, {
-            "is-invalid": errors.password,
-        });
         return (react_1.default.createElement("div", { className: "register" },
             react_1.default.createElement("div", { className: "container" },
                 react_1.default.createElement("div", { className: "row" },
@@ -92,21 +82,9 @@ var Register = /** @class */ (function (_super) {
                         react_1.default.createElement("h1", { className: "display-4 text-center" }, "Sign Up"),
                         react_1.default.createElement("p", { className: "lead text-center" }, "Create your DevBook account"),
                         react_1.default.createElement("form", { noValidate: true, onSubmit: this.handleSubmit },
-                            react_1.default.createElement("div", { className: "form-group" },
-                                react_1.default.createElement("input", { type: "text", 
-                                    // className="form-control form-control-lg"
-                                    className: invalidName, placeholder: "Name", name: "name", value: this.state.name, onChange: this.handleInputChange }),
-                                errors.name && (react_1.default.createElement("div", { className: "invalid-feedback" }, errors.name))),
-                            react_1.default.createElement("div", { className: "form-group" },
-                                react_1.default.createElement("input", { type: "email", className: invalidEmail, placeholder: "Email Address", name: "email", value: this.state.email, onChange: this.handleInputChange }),
-                                errors.email && (react_1.default.createElement("div", { className: "invalid-feedback" }, errors.email))),
-                            react_1.default.createElement("div", { className: "form-group" },
-                                react_1.default.createElement("input", { type: "password", className: invalidPassword, placeholder: "Password", name: "password", value: this.state.password, onChange: this.handleInputChange }),
-                                errors.password && (react_1.default.createElement("div", { className: "invalid-feedback" }, errors.password))),
-                            react_1.default.createElement("div", { className: "form-group" },
-                                react_1.default.createElement("input", { type: "password", 
-                                    // className={invalidName}
-                                    placeholder: "Confirm Password", name: "password2" })),
+                            react_1.default.createElement(TextField_1.default, { placeholder: "Name", name: "name", value: this.state.name, onChange: this.handleInputChange, error: errors.name }),
+                            react_1.default.createElement(TextField_1.default, { placeholder: "Email", name: "email", type: "email", value: this.state.email, onChange: this.handleInputChange, error: errors.email }),
+                            react_1.default.createElement(TextField_1.default, { placeholder: "Password", name: "password", value: this.state.password, onChange: this.handleInputChange, error: errors.password }),
                             react_1.default.createElement("input", { type: "submit", className: "btn btn-info btn-block mt-4" })))))));
     };
     return Register;

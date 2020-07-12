@@ -5,6 +5,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
 import { UserRegisterInfo, AuthInterface, Auth } from "../../types";
+import TextField from "../common/TextField";
 
 interface RegisterProps {
   registerUser(user: UserRegisterInfo, history: any): any;
@@ -67,17 +68,6 @@ class Register extends Component<RegisterProps, UserRegisterInfo> {
     const { errors } = this.props;
     const { user } = this.props.auth;
 
-    const baseClasses = "form-control form-control-lg";
-    const invalidName = classnames(baseClasses, {
-      "is-invalid": errors.name,
-    });
-    const invalidEmail = classnames(baseClasses, {
-      "is-invalid": errors.email,
-    });
-    const invalidPassword = classnames(baseClasses, {
-      "is-invalid": errors.password,
-    });
-
     return (
       <div className="register">
         <div className="container">
@@ -86,61 +76,35 @@ class Register extends Component<RegisterProps, UserRegisterInfo> {
               <h1 className="display-4 text-center">Sign Up</h1>
               <p className="lead text-center">Create your DevBook account</p>
               <form noValidate onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    // className="form-control form-control-lg"
-                    className={invalidName}
-                    placeholder="Name"
-                    name="name"
-                    value={this.state.name}
-                    onChange={this.handleInputChange}
-                  />
-                  {errors.name && (
-                    <div className="invalid-feedback">{errors.name}</div>
-                  )}
-                </div>
-                <div className="form-group">
-                  <input
-                    type="email"
-                    className={invalidEmail}
-                    placeholder="Email Address"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.handleInputChange}
-                  />
-
-                  {/* <small className="form-text text-muted">?</small> */}
-                  {errors.email && (
-                    <div className="invalid-feedback">{errors.email}</div>
-                  )}
-                </div>
-                <div className="form-group">
-                  <input
-                    type="password"
-                    className={invalidPassword}
-                    placeholder="Password"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.handleInputChange}
-                  />
-                  {errors.password && (
-                    <div className="invalid-feedback">{errors.password}</div>
-                  )}
-                </div>
-                <div className="form-group">
-                  <input
-                    type="password"
-                    // className={invalidName}
-                    placeholder="Confirm Password"
-                    name="password2"
-                    // value={this.state.password2}
-                    // onChange={this.handleInputChange}
-                  />
-                  {/* {errors.password2 && (
-                    <div className="invalid-feedback">{errors.password2}</div>
-                  )} */}
-                </div>
+                <TextField
+                  placeholder="Name"
+                  name="name"
+                  value={this.state.name}
+                  onChange={this.handleInputChange}
+                  error={errors.name}
+                />
+                <TextField
+                  placeholder="Email"
+                  name="email"
+                  type="email"
+                  value={this.state.email}
+                  onChange={this.handleInputChange}
+                  error={errors.email}
+                />
+                <TextField
+                  placeholder="Password"
+                  name="password"
+                  value={this.state.password}
+                  onChange={this.handleInputChange}
+                  error={errors.password}
+                />
+                {/* <TextField
+                  placeholder="Confirm Password"
+                  name="password2"
+                  value={this.state.password2}
+                  onChange={this.handleInputChange}
+                  error={errors.password2}
+                /> */}
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
             </div>

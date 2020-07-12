@@ -5,11 +5,10 @@ interface TextFieldInterface {
   name: string;
   value: string;
   onChange(e: any): any;
-  type: string;
+  type?: string;
   placeholder?: string;
   label?: string;
   error?: any;
-  info?: string;
   disabled?: boolean;
 }
 
@@ -19,7 +18,6 @@ export default function TextFieldGroup({
   value,
   label,
   error,
-  info,
   type,
   onChange,
   disabled,
@@ -42,7 +40,7 @@ export default function TextFieldGroup({
         onChange={onChange}
         disabled={disabled}
       />
-      {info && <small className="form-text text-muted"></small>}
+      {/* {info && <small className="form-text text-muted"></small>} */}
       {error && <div className="invalid-feedback">{error}</div>}
     </div>
   );
