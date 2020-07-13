@@ -13,7 +13,7 @@ function Input(_a) {
     });
     if (!type)
         type = "text";
-    return (react_1.default.createElement("div", { className: "form-group mb-3" },
+    return (react_1.default.createElement("div", { className: "input-group mb-3" },
         react_1.default.createElement("div", { className: "input-group-prepend" },
             react_1.default.createElement("span", { className: "input-group-text" },
                 react_1.default.createElement("i", { className: icon }))),

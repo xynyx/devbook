@@ -28,6 +28,7 @@ var react_redux_1 = require("react-redux");
 var TextField_1 = __importDefault(require("../common/TextField"));
 var TextArea_1 = __importDefault(require("../common/TextArea"));
 var SelectList_1 = __importDefault(require("../common/SelectList"));
+var Input_1 = __importDefault(require("../common/Input"));
 var CreateProfile = /** @class */ (function (_super) {
     __extends(CreateProfile, _super);
     function CreateProfile(props) {
@@ -67,7 +68,11 @@ var CreateProfile = /** @class */ (function (_super) {
         this.setState((_a = {}, _a[e.target.name] = e.target.value, _a));
     };
     CreateProfile.prototype.render = function () {
-        var errors = this.state.errors;
+        var _a = this.state, errors = _a.errors, displaySocialInputs = _a.displaySocialInputs;
+        var socialNetworks = (react_1.default.createElement("div", null,
+            react_1.default.createElement(Input_1.default, { placeholder: "Instagram URL", name: "instagram", icon: "fab fa-instagram", value: this.state.instagram, onChange: this.onChange, error: errors.instagram }),
+            react_1.default.createElement(Input_1.default, { placeholder: "LinkedIn URL", name: "linkedIn", icon: "fab fa-linkedin", value: this.state.linkedIn, onChange: this.onChange, error: errors.linkedIn }),
+            react_1.default.createElement(Input_1.default, { placeholder: "Twitter URL", name: "twitter", icon: "fab fa-twitter", value: this.state.twitter, onChange: this.onChange, error: errors.twitter })));
         var options = [
             {
                 label: "* Select Professional Status",
@@ -88,7 +93,7 @@ var CreateProfile = /** @class */ (function (_super) {
                 label: "Student",
             },
             {
-                label: "Instructor / Teacher",
+                label: "Teacher",
             },
             {
                 label: "Intern",
@@ -116,7 +121,9 @@ var CreateProfile = /** @class */ (function (_super) {
                                 react_1.default.createElement(TextArea_1.default, { placeholder: "Bio", name: "bio", value: this.state.bio, onChange: this.onChange, error: errors.bio, info: "Tell the world about yourself!" }),
                                 react_1.default.createElement("div", { className: "mb-3" },
                                     react_1.default.createElement("button", { type: "button", onClick: this.toggleSocialNetworks, className: "btn btn-light" }, "Add Social Networks"),
-                                    react_1.default.createElement("span", { className: "text-muted" }, "Optional")))))))));
+                                    react_1.default.createElement("span", { className: "text-muted" }, "Optional")),
+                                displaySocialInputs && socialNetworks,
+                                react_1.default.createElement("input", { type: "submit", value: "Submit", className: "btn btn-info btn-block mt-4" }))))))));
     };
     return CreateProfile;
 }(react_1.Component));

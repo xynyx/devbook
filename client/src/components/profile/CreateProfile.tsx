@@ -16,9 +16,9 @@ interface CreateProfileState {
   profile?: any;
   githubUsername: string;
   bio: string;
-  twitter?: string;
-  linkedIn?: string;
-  instagram?: string;
+  twitter: string;
+  linkedIn: string;
+  instagram: string;
   errors: any;
   displaySocialInputs: boolean;
 }
@@ -67,8 +67,38 @@ class CreateProfile extends Component<CreateProfileProps, CreateProfileState> {
   onChange(e: any) {
     this.setState({ [e.target.name]: e.target.value } as any);
   }
+
   render() {
-    const { errors } = this.state;
+    const { errors, displaySocialInputs } = this.state;
+
+    const socialNetworks = (
+      <div>
+        <Input
+          placeholder="Instagram URL"
+          name="instagram"
+          icon="fab fa-instagram"
+          value={this.state.instagram}
+          onChange={this.onChange}
+          error={errors.instagram}
+        />
+        <Input
+          placeholder="LinkedIn URL"
+          name="linkedIn"
+          icon="fab fa-linkedin"
+          value={this.state.linkedIn}
+          onChange={this.onChange}
+          error={errors.linkedIn}
+        />
+        <Input
+          placeholder="Twitter URL"
+          name="twitter"
+          icon="fab fa-twitter"
+          value={this.state.twitter}
+          onChange={this.onChange}
+          error={errors.twitter}
+        />
+      </div>
+    );
 
     const options = [
       {
@@ -90,7 +120,7 @@ class CreateProfile extends Component<CreateProfileProps, CreateProfileState> {
         label: "Student",
       },
       {
-        label: "Instructor / Teacher",
+        label: "Teacher",
       },
       {
         label: "Intern",
@@ -184,6 +214,12 @@ class CreateProfile extends Component<CreateProfileProps, CreateProfileState> {
                     </button>
                     <span className="text-muted">Optional</span>
                   </div>
+                  {displaySocialInputs && socialNetworks}
+                  <input
+                    type="submit"
+                    value="Submit"
+                    className="btn btn-info btn-block mt-4"
+                  />
                 </form>
               </h1>
             </div>

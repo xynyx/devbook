@@ -28,7 +28,7 @@ export default function Input({
   if (!type) type = "text";
 
   return (
-    <div className="form-group mb-3">
+    <div className="input-group mb-3">
       <div className="input-group-prepend">
         <span className="input-group-text">
           <i className={icon}></i>
@@ -39,7 +39,7 @@ export default function Input({
         placeholder={placeholder}
         name={name}
         value={value}
-        onChange={onChange}
+        onChange={onChange} 
       />
       {error && <div className="invalid-feedback">{error}</div>}
     </div>
