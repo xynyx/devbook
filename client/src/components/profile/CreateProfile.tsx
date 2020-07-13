@@ -125,7 +125,7 @@ class CreateProfile extends Component<CreateProfileProps, CreateProfileState> {
                   onChange={this.onChange}
                   options={options}
                   error={errors.status}
-                  info="A unique handle for your profile URL. These fields CANNOT be changed later."
+                  info="Job Title"
                 />
                 </form>
               </h1>

@@ -7,7 +7,7 @@ interface SelectListInterface {
   onChange(e: any): any;
   error?: any;
   info?: string;
-  options?: any[];
+  options: any[];
   placeholder: string;
 }
 
@@ -25,8 +25,12 @@ export default function SelectList({
     "is-invalid": error,
   });
 
-  const selectOptions = options?.map(option => (
-    <option key={option.label} value={option.value}></option>
+  console.log("options :>> ", options);
+
+  const selectOptions = options.map(option => (
+    <option key={option.label} value={option.value}>
+      {option.label}
+    </option>
   ));
 
   return (

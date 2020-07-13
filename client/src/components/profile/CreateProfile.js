@@ -108,7 +108,7 @@ var CreateProfile = /** @class */ (function (_super) {
                             react_1.default.createElement("small", { className: "d-block pb-3" }, "* = required fields"),
                             react_1.default.createElement("form", { onSubmit: this.handleSubmit },
                                 react_1.default.createElement(TextField_1.default, { placeholder: "* Profile Handle", name: "handle", value: this.state.handle, onChange: this.onChange, error: errors.handle, info: "A unique handle for your profile URL. These fields CANNOT be changed later." }),
-                                react_1.default.createElement(SelectList_1.default, { placeholder: "Status", name: "status", value: this.state.status, onChange: this.onChange, options: options, error: errors.status, info: "A unique handle for your profile URL. These fields CANNOT be changed later." }))))))));
+                                react_1.default.createElement(SelectList_1.default, { placeholder: "Status", name: "status", value: this.state.status, onChange: this.onChange, options: options, error: errors.status, info: "Job Title" }))))))));
     };
     return CreateProfile;
 }(react_1.Component));
