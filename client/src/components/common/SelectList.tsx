@@ -28,7 +28,7 @@ export default function SelectList({
   console.log("options :>> ", options);
 
   const selectOptions = options.map(option => (
-    <option key={option.label} value={option.value}>
+    <option key={option.label} value={option.label}>
       {option.label}
     </option>
   ));

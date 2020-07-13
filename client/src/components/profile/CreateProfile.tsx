@@ -7,20 +7,20 @@ import SelectList from "../common/SelectList";
 import Input from "../common/Input";
 
 interface CreateProfileState {
-  socialNetworks: boolean;
   handle: string;
-  company?: string;
-  website?: string;
-  location?: string;
+  company: string;
+  website: string;
+  location: string;
   status: string;
-  skills?: string;
+  skills: string;
   profile?: any;
-  githubUsername?: string;
-  bio?: string;
+  githubUsername: string;
+  bio: string;
   twitter?: string;
   linkedIn?: string;
   instagram?: string;
   errors: any;
+  displaySocialInputs: boolean;
 }
 
 interface CreateProfileProps {
@@ -32,7 +32,6 @@ class CreateProfile extends Component<CreateProfileProps, CreateProfileState> {
   constructor(props: CreateProfileProps) {
     super(props);
     this.state = {
-      socialNetworks: false,
       handle: "",
       company: "",
       website: "",
@@ -45,15 +44,24 @@ class CreateProfile extends Component<CreateProfileProps, CreateProfileState> {
       linkedIn: "",
       instagram: "",
       errors: {},
+      displaySocialInputs: false,
     };
 
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.toggleSocialNetworks = this.toggleSocialNetworks.bind(this);
   }
 
   handleSubmit(e: any) {
     e.preventDefault();
     console.log("submit");
+  }
+
+  toggleSocialNetworks() {
+    console.log("this.state :>> ", this.state);
+    this.setState(prev => ({
+      displaySocialInputs: !prev.displaySocialInputs,
+    }));
   }
 
   onChange(e: any) {
@@ -65,39 +73,30 @@ class CreateProfile extends Component<CreateProfileProps, CreateProfileState> {
     const options = [
       {
         label: "* Select Professional Status",
-        value: 0,
       },
       {
         label: "Developer",
-        value: "Developer",
       },
       {
         label: "Junior Developer",
-        value: "Junior Developer",
       },
       {
         label: "Senior Developer",
-        value: "Senior Developer",
       },
       {
         label: "Manager",
-        value: "Manager",
       },
       {
         label: "Student",
-        value: "Student",
       },
       {
         label: "Instructor / Teacher",
-        value: "Instructor / Teacher",
       },
       {
         label: "Intern",
-        value: "Intern",
       },
       {
         label: "Other",
-        value: "Other",
       },
     ];
     return (
@@ -110,23 +109,81 @@ class CreateProfile extends Component<CreateProfileProps, CreateProfileState> {
                 <p className="lead text-center">Add stuff</p>
                 <small className="d-block pb-3">* = required fields</small>
                 <form onSubmit={this.handleSubmit}>
-                <TextField
-                  placeholder="* Profile Handle"
-                  name="handle"
-                  value={this.state.handle}
-                  onChange={this.onChange}
-                  error={errors.handle}
-                  info="A unique handle for your profile URL. These fields CANNOT be changed later."
-                />
-                <SelectList
-                  placeholder="Status"
-                  name="status"
-                  value={this.state.status}
-                  onChange={this.onChange}
-                  options={options}
-                  error={errors.status}
-                  info="Job Title"
-                />
+                  <TextField
+                    placeholder="* Profile Handle"
+                    name="handle"
+                    value={this.state.handle}
+                    onChange={this.onChange}
+                    error={errors.handle}
+                    info="A unique handle for your profile URL. These fields CANNOT be changed later."
+                  />
+                  <SelectList
+                    placeholder="Status"
+                    name="status"
+                    value={this.state.status}
+                    onChange={this.onChange}
+                    options={options}
+                    error={errors.status}
+                    info="Job Title"
+                  />
+                  <TextField
+                    placeholder="Company"
+                    name="company"
+                    value={this.state.company}
+                    onChange={this.onChange}
+                    error={errors.company}
+                    info="Current Company"
+                  />
+                  <TextField
+                    placeholder="Website"
+                    name="website"
+                    value={this.state.website}
+                    onChange={this.onChange}
+                    error={errors.website}
+                    info="Portfolio Website"
+                  />
+                  <TextField
+                    placeholder="Location"
+                    name="location"
+                    value={this.state.location}
+                    onChange={this.onChange}
+                    error={errors.location}
+                    info="Location"
+                  />
+                  <TextField
+                    placeholder="* Skills"
+                    name="skills"
+                    value={this.state.skills}
+                    onChange={this.onChange}
+                    error={errors.skills}
+                    info="Please use comma separated values - eg. 'JavaScript,Python,React'"
+                  />
+                  <TextField
+                    placeholder="Github Username"
+                    name="githubUsername"
+                    value={this.state.githubUsername}
+                    onChange={this.onChange}
+                    error={errors.githubUsername}
+                    info="Include your Github username if you want to display your repositories."
+                  />
+                  <TextArea
+                    placeholder="Bio"
+                    name="bio"
+                    value={this.state.bio}
+                    onChange={this.onChange}
+                    error={errors.bio}
+                    info="Tell the world about yourself!"
+                  />
+                  <div className="mb-3">
+                    <button
+                      type="button"
+                      onClick={this.toggleSocialNetworks}
+                      className="btn btn-light"
+                    >
+                      Add Social Networks
+                    </button>
+                    <span className="text-muted">Optional</span>
+                  </div>
                 </form>
               </h1>
             </div>

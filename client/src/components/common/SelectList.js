@@ -12,7 +12,7 @@ function SelectList(_a) {
         "is-invalid": error,
     });
     console.log("options :>> ", options);
-    var selectOptions = options.map(function (option) { return (react_1.default.createElement("option", { key: option.label, value: option.value }, option.label)); });
+    var selectOptions = options.map(function (option) { return (react_1.default.createElement("option", { key: option.label, value: option.label }, option.label)); });
     return (react_1.default.createElement("div", { className: "form-group" },
         react_1.default.createElement("select", { placeholder: placeholder, className: isInvalid, name: name, value: value, onChange: onChange }, selectOptions),
         info && react_1.default.createElement("small", { className: "form-text text-muted" }, info),

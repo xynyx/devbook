@@ -26,13 +26,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 var react_redux_1 = require("react-redux");
 var TextField_1 = __importDefault(require("../common/TextField"));
+var TextArea_1 = __importDefault(require("../common/TextArea"));
 var SelectList_1 = __importDefault(require("../common/SelectList"));
 var CreateProfile = /** @class */ (function (_super) {
     __extends(CreateProfile, _super);
     function CreateProfile(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            socialNetworks: false,
             handle: "",
             company: "",
             website: "",
@@ -45,14 +45,22 @@ var CreateProfile = /** @class */ (function (_super) {
             linkedIn: "",
             instagram: "",
             errors: {},
+            displaySocialInputs: false,
         };
         _this.onChange = _this.onChange.bind(_this);
         _this.handleSubmit = _this.handleSubmit.bind(_this);
+        _this.toggleSocialNetworks = _this.toggleSocialNetworks.bind(_this);
         return _this;
     }
     CreateProfile.prototype.handleSubmit = function (e) {
         e.preventDefault();
         console.log("submit");
+    };
+    CreateProfile.prototype.toggleSocialNetworks = function () {
+        console.log("this.state :>> ", this.state);
+        this.setState(function (prev) { return ({
+            displaySocialInputs: !prev.displaySocialInputs,
+        }); });
     };
     CreateProfile.prototype.onChange = function (e) {
         var _a;
@@ -63,39 +71,30 @@ var CreateProfile = /** @class */ (function (_super) {
         var options = [
             {
                 label: "* Select Professional Status",
-                value: 0,
             },
             {
                 label: "Developer",
-                value: "Developer",
             },
             {
                 label: "Junior Developer",
-                value: "Junior Developer",
             },
             {
                 label: "Senior Developer",
-                value: "Senior Developer",
             },
             {
                 label: "Manager",
-                value: "Manager",
             },
             {
                 label: "Student",
-                value: "Student",
             },
             {
                 label: "Instructor / Teacher",
-                value: "Instructor / Teacher",
             },
             {
                 label: "Intern",
-                value: "Intern",
             },
             {
                 label: "Other",
-                value: "Other",
             },
         ];
         return (react_1.default.createElement("div", { className: "create-profile" },
@@ -108,7 +107,16 @@ var CreateProfile = /** @class */ (function (_super) {
                             react_1.default.createElement("small", { className: "d-block pb-3" }, "* = required fields"),
                             react_1.default.createElement("form", { onSubmit: this.handleSubmit },
                                 react_1.default.createElement(TextField_1.default, { placeholder: "* Profile Handle", name: "handle", value: this.state.handle, onChange: this.onChange, error: errors.handle, info: "A unique handle for your profile URL. These fields CANNOT be changed later." }),
-                                react_1.default.createElement(SelectList_1.default, { placeholder: "Status", name: "status", value: this.state.status, onChange: this.onChange, options: options, error: errors.status, info: "Job Title" }))))))));
+                                react_1.default.createElement(SelectList_1.default, { placeholder: "Status", name: "status", value: this.state.status, onChange: this.onChange, options: options, error: errors.status, info: "Job Title" }),
+                                react_1.default.createElement(TextField_1.default, { placeholder: "Company", name: "company", value: this.state.company, onChange: this.onChange, error: errors.company, info: "Current Company" }),
+                                react_1.default.createElement(TextField_1.default, { placeholder: "Website", name: "website", value: this.state.website, onChange: this.onChange, error: errors.website, info: "Portfolio Website" }),
+                                react_1.default.createElement(TextField_1.default, { placeholder: "Location", name: "location", value: this.state.location, onChange: this.onChange, error: errors.location, info: "Location" }),
+                                react_1.default.createElement(TextField_1.default, { placeholder: "* Skills", name: "skills", value: this.state.skills, onChange: this.onChange, error: errors.skills, info: "Please use comma separated values - eg. 'JavaScript,Python,React'" }),
+                                react_1.default.createElement(TextField_1.default, { placeholder: "Github Username", name: "githubUsername", value: this.state.githubUsername, onChange: this.onChange, error: errors.githubUsername, info: "Include your Github username if you want to display your repositories." }),
+                                react_1.default.createElement(TextArea_1.default, { placeholder: "Bio", name: "bio", value: this.state.bio, onChange: this.onChange, error: errors.bio, info: "Tell the world about yourself!" }),
+                                react_1.default.createElement("div", { className: "mb-3" },
+                                    react_1.default.createElement("button", { type: "button", onClick: this.toggleSocialNetworks, className: "btn btn-light" }, "Add Social Networks"),
+                                    react_1.default.createElement("span", { className: "text-muted" }, "Optional")))))))));
     };
     return CreateProfile;
 }(react_1.Component));
