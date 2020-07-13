@@ -8,6 +8,7 @@ import { clearProfileOnLogout } from "./actions/profileActions";
 import setAuthToken from "./helpers/setAuthToken";
 
 import PrivateRoute from "./components/common/PrivateRoute";
+import CreateProfile from "./components/profile/CreateProfile"
 
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
@@ -53,6 +54,7 @@ function App() {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              <PrivateRoute exact path="/create-profile" component={CreateProfile} />
           </div>
           <Footer />
         </div>

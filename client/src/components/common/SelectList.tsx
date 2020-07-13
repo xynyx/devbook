@@ -1,46 +1,43 @@
 import React from "react";
 import classnames from "classnames";
 
-interface TextFieldInterface {
+interface SelectListInterface {
   name: string;
   value: string;
   onChange(e: any): any;
-  type?: string;
-  placeholder?: string;
-  label?: string;
   error?: any;
-  disabled?: boolean;
+  info?: string;
+  options?: any[];
 }
 
-export default function TextField({
+export default function SelectList({
   name,
-  placeholder,
   value,
-  label,
   error,
-  type,
   onChange,
-  disabled,
-}: TextFieldInterface) {
+  options,
+  info,
+}: SelectListInterface) {
   const baseClasses = "form-control form-control-lg";
   const isInvalid = classnames(baseClasses, {
     "is-invalid": error,
   });
 
-  if (!type) type = "text";
+  const selectOptions = options?.map(option => (
+    <option key={option.label} value={option.value}></option>
+  ));
 
   return (
     <div className="form-group">
-      <input
-        type={type}
+      <select
         className={isInvalid}
-        placeholder={placeholder}
         name={name}
         value={value}
         onChange={onChange}
-        disabled={disabled}
-      />
-      {/* {info && <small className="form-text text-muted"></small>} */}
+      >
+        {selectOptions}
+      </select>
+      {info && <small className="form-text text-muted"></small>}
       {error && <div className="invalid-feedback">{error}</div>}
     </div>
   );

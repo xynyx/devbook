@@ -5,16 +5,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importDefault(require("react"));
 var classnames_1 = __importDefault(require("classnames"));
-function TextField(_a) {
-    var name = _a.name, placeholder = _a.placeholder, value = _a.value, label = _a.label, error = _a.error, type = _a.type, onChange = _a.onChange, disabled = _a.disabled;
+function SelectList(_a) {
+    var name = _a.name, value = _a.value, error = _a.error, onChange = _a.onChange, options = _a.options, info = _a.info;
     var baseClasses = "form-control form-control-lg";
     var isInvalid = classnames_1.default(baseClasses, {
         "is-invalid": error,
     });
-    if (!type)
-        type = "text";
+    var selectOptions = options === null || options === void 0 ? void 0 : options.map(function (option) { return (react_1.default.createElement("option", { key: option.label, value: option.value })); });
     return (react_1.default.createElement("div", { className: "form-group" },
-        react_1.default.createElement("input", { type: type, className: isInvalid, placeholder: placeholder, name: name, value: value, onChange: onChange, disabled: disabled }),
+        react_1.default.createElement("select", { className: isInvalid, name: name, value: value, onChange: onChange }, selectOptions),
+        info && react_1.default.createElement("small", { className: "form-text text-muted" }),
         error && react_1.default.createElement("div", { className: "invalid-feedback" }, error)));
 }
-exports.default = TextField;
+exports.default = SelectList;

@@ -1,44 +1,35 @@
 import React from "react";
 import classnames from "classnames";
 
-interface TextFieldInterface {
+interface TextAreaInterface {
   name: string;
   value: string;
   onChange(e: any): any;
-  type?: string;
   placeholder?: string;
-  label?: string;
   error?: any;
-  disabled?: boolean;
 }
 
-export default function TextField({
+export default function TextArea({
   name,
   placeholder,
   value,
-  label,
   error,
-  type,
   onChange,
-  disabled,
-}: TextFieldInterface) {
+}: TextAreaInterface) {
   const baseClasses = "form-control form-control-lg";
   const isInvalid = classnames(baseClasses, {
     "is-invalid": error,
   });
 
-  if (!type) type = "text";
 
   return (
     <div className="form-group">
-      <input
-        type={type}
+      <textarea
         className={isInvalid}
         placeholder={placeholder}
         name={name}
         value={value}
         onChange={onChange}
-        disabled={disabled}
       />
       {/* {info && <small className="form-text text-muted"></small>} */}
       {error && <div className="invalid-feedback">{error}</div>}
