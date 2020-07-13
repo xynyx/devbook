@@ -173,7 +173,7 @@ class CreateProfile extends Component<CreateProfileProps, CreateProfileState> {
                 Create Your Profile
                 <p className="lead text-center">Add stuff</p>
                 <small className="d-block pb-3">* = required fields</small>
-                <form onSubmit={this.handleSubmit}>
+                <form noValidate onSubmit={this.handleSubmit}>
                   <TextField
                     placeholder="* Profile Handle"
                     name="handle"
@@ -189,7 +189,7 @@ class CreateProfile extends Component<CreateProfileProps, CreateProfileState> {
                     onChange={this.onChange}
                     options={options}
                     error={errors.status}
-                    info="Job Title"
+                    info="Status"
                   />
                   <TextField
                     placeholder="Company"

@@ -17,7 +17,7 @@ var login_1 = __importDefault(require("../../validation/login"));
  * * GET api/users/test
  * ? Tests POST route
  */
-router.get("/test", function (req, res) { return res.json({ msg: "Users works" }); });
+router.get("/test", function (req, res) { return res.json("Users works"); });
 /**
  * * GET api/users/register
  * ? Register User

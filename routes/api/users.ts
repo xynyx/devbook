@@ -13,7 +13,7 @@ import validateLoginInput from "../../validation/login";
  * * GET api/users/test
  * ? Tests POST route
  */
-router.get("/test", (req, res) => res.json({ msg: "Users works" }));
+router.get("/test", (req, res) => res.json("Users works"));
 
 /**
  * * GET api/users/register
