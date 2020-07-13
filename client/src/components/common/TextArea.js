@@ -13,7 +13,7 @@ function TextArea(_a) {
     });
     return (react_1.default.createElement("div", { className: "form-group" },
         react_1.default.createElement("textarea", { className: isInvalid, placeholder: placeholder, name: name, value: value, onChange: onChange }),
-        info && react_1.default.createElement("small", { className: "form-text text-muted" }),
+        info && react_1.default.createElement("small", { className: "form-text text-muted" }, info),
         error && react_1.default.createElement("div", { className: "invalid-feedback" }, error)));
 }
 exports.default = TextArea;

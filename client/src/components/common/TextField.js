@@ -6,7 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importDefault(require("react"));
 var classnames_1 = __importDefault(require("classnames"));
 function TextField(_a) {
-    var name = _a.name, placeholder = _a.placeholder, value = _a.value, label = _a.label, error = _a.error, type = _a.type, onChange = _a.onChange, disabled = _a.disabled;
+    var name = _a.name, info = _a.info, placeholder = _a.placeholder, value = _a.value, label = _a.label, error = _a.error, type = _a.type, onChange = _a.onChange, disabled = _a.disabled;
+    console.log('info :>> ', info);
     var baseClasses = "form-control form-control-lg";
     var isInvalid = classnames_1.default(baseClasses, {
         "is-invalid": error,
@@ -15,6 +16,7 @@ function TextField(_a) {
         type = "text";
     return (react_1.default.createElement("div", { className: "form-group" },
         react_1.default.createElement("input", { type: type, className: isInvalid, placeholder: placeholder, name: name, value: value, onChange: onChange, disabled: disabled }),
+        info && react_1.default.createElement("small", { className: "form-text text-muted" }, info),
         error && react_1.default.createElement("div", { className: "invalid-feedback" }, error)));
 }
 exports.default = TextField;

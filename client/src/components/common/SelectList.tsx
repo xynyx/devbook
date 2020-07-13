@@ -8,6 +8,7 @@ interface SelectListInterface {
   error?: any;
   info?: string;
   options?: any[];
+  placeholder: string;
 }
 
 export default function SelectList({
@@ -16,6 +17,7 @@ export default function SelectList({
   error,
   onChange,
   options,
+  placeholder,
   info,
 }: SelectListInterface) {
   const baseClasses = "form-control form-control-lg";
@@ -30,6 +32,7 @@ export default function SelectList({
   return (
     <div className="form-group">
       <select
+        placeholder={placeholder}
         className={isInvalid}
         name={name}
         value={value}
@@ -37,7 +40,7 @@ export default function SelectList({
       >
         {selectOptions}
       </select>
-      {info && <small className="form-text text-muted"></small>}
+      {info && <small className="form-text text-muted">{info}</small>}
       {error && <div className="invalid-feedback">{error}</div>}
     </div>
   );

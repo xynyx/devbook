@@ -10,10 +10,12 @@ interface TextFieldInterface {
   label?: string;
   error?: any;
   disabled?: boolean;
+  info?: string;
 }
 
 export default function TextField({
   name,
+  info,
   placeholder,
   value,
   label,
@@ -22,6 +24,8 @@ export default function TextField({
   onChange,
   disabled,
 }: TextFieldInterface) {
+
+  console.log('info :>> ', info);
   const baseClasses = "form-control form-control-lg";
   const isInvalid = classnames(baseClasses, {
     "is-invalid": error,
@@ -40,7 +44,7 @@ export default function TextField({
         onChange={onChange}
         disabled={disabled}
       />
-      {/* {info && <small className="form-text text-muted"></small>} */}
+      {info && <small className="form-text text-muted">{info}</small>}
       {error && <div className="invalid-feedback">{error}</div>}
     </div>
   );
