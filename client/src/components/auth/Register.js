@@ -67,14 +67,13 @@ var Register = /** @class */ (function (_super) {
             this.props.history.push("/dashboard");
         }
     };
-    Register.prototype.componentWillReceiveProps = function (nextProps) {
-        if (nextProps.errors) {
-            this.setState({ errors: nextProps.errors });
-        }
-    };
+    // componentWillReceiveProps(nextProps: any) {
+    //   if (nextProps.errors) {
+    //     this.setState({ errors: nextProps.errors });
+    //   }
+    // }
     Register.prototype.render = function () {
         var errors = this.props.errors;
-        var user = this.props.auth.user;
         return (react_1.default.createElement("div", { className: "register" },
             react_1.default.createElement("div", { className: "container" },
                 react_1.default.createElement("div", { className: "row" },
@@ -84,7 +83,7 @@ var Register = /** @class */ (function (_super) {
                         react_1.default.createElement("form", { noValidate: true, onSubmit: this.handleSubmit },
                             react_1.default.createElement(TextField_1.default, { placeholder: "Name", name: "name", value: this.state.name, onChange: this.handleInputChange, error: errors.name }),
                             react_1.default.createElement(TextField_1.default, { placeholder: "Email", name: "email", type: "email", value: this.state.email, onChange: this.handleInputChange, error: errors.email }),
-                            react_1.default.createElement(TextField_1.default, { placeholder: "Password", name: "password", value: this.state.password, onChange: this.handleInputChange, error: errors.password }),
+                            react_1.default.createElement(TextField_1.default, { placeholder: "Password", name: "password", type: "password", value: this.state.password, onChange: this.handleInputChange, error: errors.password }),
                             react_1.default.createElement("input", { type: "submit", className: "btn btn-info btn-block mt-4" })))))));
     };
     return Register;

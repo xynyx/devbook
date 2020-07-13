@@ -14,18 +14,30 @@ function registerUser(userData, history) {
 }
 */
 exports.registerUser = function (userData, history) { return function (dispatch) {
+    console.log("userData", userData);
     axios_1.default
         .post("/api/users/register", userData)
-        .then(function (res) { return history.push("/login"); })
+        .then(function (res) {
+        console.log('res', res.data);
+        var token = res.data.token;
+        localStorage.setItem("jwtToken", token);
+        // Set token to Authorization header to allow user access to protected routes
+        setAuthToken_1.default(token);
+        var decoded = jwt_decode_1.default(token);
+        dispatch(exports.setCurrentUser(decoded));
+        history.push("/dashboard");
+    })
         // err.response.data to actually get the object of errors
         .catch(function (err) {
+        console.log("err", err);
         dispatch({ type: types_1.SET_ERRORS, payload: err.response.data });
     });
 }; };
-exports.loginUser = function (userData) { return function (dispatch) {
+exports.loginUser = function (userData, history) { return function (dispatch) {
     axios_1.default
         .post("/api/users/login", userData)
         .then(function (res) {
+        console.log('res.data', res.data);
         // Save JWT to localStorage
         var token = res.data.token;
         localStorage.setItem("jwtToken", token);
@@ -33,6 +45,7 @@ exports.loginUser = function (userData) { return function (dispatch) {
         setAuthToken_1.default(token);
         var decoded = jwt_decode_1.default(token);
         dispatch(exports.setCurrentUser(decoded));
+        history.push("/dashboard");
     })
         .catch(function (err) {
         dispatch({ type: types_1.SET_ERRORS, payload: err.response.data });

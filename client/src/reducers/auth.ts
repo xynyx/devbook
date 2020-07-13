@@ -6,7 +6,8 @@ const initialState = {
 };
 
 export default function (state = initialState, action: any) {
-  console.log("action.payload", action.payload);
+  console.log("action.paylozsad", action.payload);
+  console.log('state', state)
   switch (action.type) {
     case SET_USER:
       return {

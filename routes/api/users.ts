@@ -26,7 +26,7 @@ router.post("/register", (req, res) => {
 
   User.findOne({ email: req.body.email }).then((user: string) => {
     if (user) {
-      errors.email = "Email already exists"
+      errors.email = "Email already exists";
       return res.status(400).json(errors);
     } else {
       const avatar = gravatar.url(req.body.email, {
@@ -47,7 +47,17 @@ router.post("/register", (req, res) => {
           newUser
             .save()
             .then((user: any) => {
-              res.json(user);
+              const { id, name, avatar } = user;
+              const payload = { id, name, avatar };
+              jwt.sign(
+                payload,
+                process.env.SECRET,
+                { expiresIn: "4h" },
+                (err: string, token: string) => {
+                  // Token is then later sent as a header to validate user
+                  res.json({ success: true, token });
+                }
+              );
             })
             .catch((err: any) => console.log(err));
         });
@@ -75,7 +85,7 @@ router.post("/login", (req, res) => {
     //Check Password
     bcrypt.compare(password, user.password).then((authenticated: boolean) => {
       if (authenticated) {
-                // Sign Token - take in info; expiration
+        // Sign Token - take in info; expiration
         const { id, name, avatar } = user;
         // JWT Payload
         const payload = { id, name, avatar };

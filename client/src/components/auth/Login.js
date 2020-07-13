@@ -45,7 +45,7 @@ var Login = /** @class */ (function (_super) {
             e.preventDefault();
             var _a = _this.state, email = _a.email, password = _a.password;
             var user = { email: email, password: password };
-            _this.props.loginUser(user);
+            _this.props.loginUser(user, _this.props.history);
             // console.log(user);
         };
         _this.state = {
@@ -67,12 +67,9 @@ var Login = /** @class */ (function (_super) {
         if (nextProps.errors) {
             this.setState({ errors: nextProps.errors });
         }
-        if (nextProps.auth.isAuthenticated) {
-            this.props.history.push("/dashboard");
-        }
     };
     Login.prototype.render = function () {
-        var errors = this.state.errors;
+        var errors = this.props.errors;
         return (react_1.default.createElement("div", { className: "login" },
             react_1.default.createElement("div", { className: "container" },
                 react_1.default.createElement("div", { className: "row" },

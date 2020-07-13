@@ -6,7 +6,7 @@ import TextField from "../common/TextField";
 
 interface LoginProps {
   // registerUser(user: UserRegisterInfo, history: any): any;
-  loginUser(user: LoginInfo): any;
+  loginUser(user: LoginInfo, history: any): any;
   auth: Auth;
   errors?: any;
   history?: any;
@@ -42,7 +42,7 @@ class Login extends Component<LoginProps, LoginInfo> {
     const { email, password } = this.state;
     const user = { email, password };
 
-    this.props.loginUser(user);
+    this.props.loginUser(user, this.props.history);
 
     // console.log(user);
   };
@@ -58,13 +58,10 @@ class Login extends Component<LoginProps, LoginInfo> {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
-    if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/dashboard");
-    }
   }
 
   render() {
-    const { errors } = this.state;
+    const { errors } = this.props;
 
     return (
       <div className="login">

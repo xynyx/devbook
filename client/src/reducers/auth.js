@@ -18,7 +18,8 @@ var initialState = {
 };
 function default_1(state, action) {
     if (state === void 0) { state = initialState; }
-    console.log("action.payload", action.payload);
+    console.log("action.paylozsad", action.payload);
+    console.log('state', state);
     switch (action.type) {
         case types_1.SET_USER:
             return __assign(__assign({}, state), { isAuthenticated: Object.keys(action.payload).length > 0 ? true : false, user: action.payload });

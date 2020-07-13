@@ -56,15 +56,14 @@ class Register extends Component<RegisterProps, UserRegisterInfo> {
     }
   }
 
-  componentWillReceiveProps(nextProps: any) {
-    if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
-    }
-  }
+  // componentWillReceiveProps(nextProps: any) {
+  //   if (nextProps.errors) {
+  //     this.setState({ errors: nextProps.errors });
+  //   }
+  // }
 
   render() {
     const { errors } = this.props;
-    const { user } = this.props.auth;
 
     return (
       <div className="register">
@@ -92,6 +91,7 @@ class Register extends Component<RegisterProps, UserRegisterInfo> {
                 <TextField
                   placeholder="Password"
                   name="password"
+                  type="password"
                   value={this.state.password}
                   onChange={this.handleInputChange}
                   error={errors.password}

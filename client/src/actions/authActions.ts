@@ -13,19 +13,38 @@ function registerUser(userData, history) {
 export const registerUser = (userData: LoginInfo, history: any) => (
   dispatch: any
 ) => {
+  console.log("userData", userData);
   axios
     .post("/api/users/register", userData)
-    .then(res => history.push("/login"))
+    .then(res => {
+      console.log('res', res.data)
+      const { token } = res.data;
+
+      localStorage.setItem("jwtToken", token);
+
+      // Set token to Authorization header to allow user access to protected routes
+      setAuthToken(token);
+
+      const decoded = jwt_decode(token);
+
+      dispatch(setCurrentUser(decoded));
+
+      history.push("/dashboard");
+    })
     // err.response.data to actually get the object of errors
     .catch(err => {
+      console.log("err", err);
       dispatch({ type: SET_ERRORS, payload: err.response.data });
     });
 };
 
-export const loginUser = (userData: LoginInfo) => (dispatch: any) => {
+export const loginUser = (userData: LoginInfo, history: any) => (
+  dispatch: any
+) => {
   axios
     .post("/api/users/login", userData)
     .then(res => {
+      console.log('res.data', res.data)
       // Save JWT to localStorage
       const { token } = res.data;
 
@@ -37,6 +56,8 @@ export const loginUser = (userData: LoginInfo) => (dispatch: any) => {
       const decoded = jwt_decode(token);
 
       dispatch(setCurrentUser(decoded));
+
+      history.push("/dashboard");
     })
     .catch(err => {
       dispatch({ type: SET_ERRORS, payload: err.response.data });
@@ -55,14 +76,13 @@ export const setCurrentUser = (decoded: any) => {
 export const logoutUser = () => (dispatch: any) => {
   // Remove JWT token
   try {
-    console.log("here")
+    console.log("here");
     localStorage.removeItem("jwtToken");
     // Delete Authorization header with the token
     setAuthToken(false);
     // Set {} for user => isAuthorized set to false (see AuthReducer)
     dispatch(setCurrentUser({}));
-
   } catch {
-    console.log("Logout Failed")
+    console.log("Logout Failed");
   }
 };
