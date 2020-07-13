@@ -21,7 +21,7 @@ var profile = require("./routes/api/profile");
 var posts = require("./routes/api/posts");
 var passport = require("passport");
 var app = express_1.default();
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 var db = process.env.MONGO_URI;
 mongoose

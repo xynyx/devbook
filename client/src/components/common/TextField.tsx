@@ -25,7 +25,6 @@ export default function TextField({
   disabled,
 }: TextFieldInterface) {
 
-  console.log('info :>> ', info);
   const baseClasses = "form-control form-control-lg";
   const isInvalid = classnames(baseClasses, {
     "is-invalid": error,

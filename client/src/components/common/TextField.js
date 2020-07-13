@@ -7,7 +7,6 @@ var react_1 = __importDefault(require("react"));
 var classnames_1 = __importDefault(require("classnames"));
 function TextField(_a) {
     var name = _a.name, info = _a.info, placeholder = _a.placeholder, value = _a.value, label = _a.label, error = _a.error, type = _a.type, onChange = _a.onChange, disabled = _a.disabled;
-    console.log('info :>> ', info);
     var baseClasses = "form-control form-control-lg";
     var isInvalid = classnames_1.default(baseClasses, {
         "is-invalid": error,

@@ -55,7 +55,7 @@ router.post("/register", (req, res) => {
                 { expiresIn: "4h" },
                 (err: string, token: string) => {
                   // Token is then later sent as a header to validate user
-                  res.json({ success: true, token });
+                  res.json({ success: true, token: "Bearer " + token });
                 }
               );
             })
@@ -95,7 +95,7 @@ router.post("/login", (req, res) => {
           { expiresIn: "4h" },
           (err: string, token: string) => {
             // Token is then later sent as a header to validate user
-            res.json({ success: true, token });
+            res.json({ success: true, token: "Bearer " + token });
           }
         );
       } else {

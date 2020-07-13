@@ -18,7 +18,7 @@ exports.registerUser = function (userData, history) { return function (dispatch)
     axios_1.default
         .post("/api/users/register", userData)
         .then(function (res) {
-        console.log('res', res.data);
+        console.log("res", res.data);
         var token = res.data.token;
         localStorage.setItem("jwtToken", token);
         // Set token to Authorization header to allow user access to protected routes
@@ -37,8 +37,9 @@ exports.loginUser = function (userData, history) { return function (dispatch) {
     axios_1.default
         .post("/api/users/login", userData)
         .then(function (res) {
-        console.log('res.data', res.data);
+        console.log("res.data", res.data);
         // Save JWT to localStorage
+        //! NOT DRY
         var token = res.data.token;
         localStorage.setItem("jwtToken", token);
         // Set token to Authorization header to allow user access to protected routes

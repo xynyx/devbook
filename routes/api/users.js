@@ -54,7 +54,7 @@ router.post("/register", function (req, res) {
                         var payload = { id: id, name: name, avatar: avatar };
                         jwt.sign(payload, process.env.SECRET, { expiresIn: "4h" }, function (err, token) {
                             // Token is then later sent as a header to validate user
-                            res.json({ success: true, token: token });
+                            res.json({ success: true, token: "Bearer " + token });
                         });
                     })
                         .catch(function (err) { return console.log(err); });
@@ -86,7 +86,7 @@ router.post("/login", function (req, res) {
                 var payload = { id: id, name: name_1, avatar: avatar };
                 jwt.sign(payload, process.env.SECRET, { expiresIn: "4h" }, function (err, token) {
                     // Token is then later sent as a header to validate user
-                    res.json({ success: true, token: token });
+                    res.json({ success: true, token: "Bearer " + token });
                 });
             }
             else {

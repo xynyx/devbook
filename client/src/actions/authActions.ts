@@ -17,7 +17,7 @@ export const registerUser = (userData: LoginInfo, history: any) => (
   axios
     .post("/api/users/register", userData)
     .then(res => {
-      console.log('res', res.data)
+      console.log("res", res.data);
       const { token } = res.data;
 
       localStorage.setItem("jwtToken", token);
@@ -44,8 +44,9 @@ export const loginUser = (userData: LoginInfo, history: any) => (
   axios
     .post("/api/users/login", userData)
     .then(res => {
-      console.log('res.data', res.data)
+      console.log("res.data", res.data);
       // Save JWT to localStorage
+      //! NOT DRY
       const { token } = res.data;
 
       localStorage.setItem("jwtToken", token);

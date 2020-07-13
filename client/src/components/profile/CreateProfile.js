@@ -27,8 +27,10 @@ var react_1 = __importStar(require("react"));
 var react_redux_1 = require("react-redux");
 var TextField_1 = __importDefault(require("../common/TextField"));
 var TextArea_1 = __importDefault(require("../common/TextArea"));
-var SelectList_1 = __importDefault(require("../common/SelectList"));
 var Input_1 = __importDefault(require("../common/Input"));
+var SelectList_1 = __importDefault(require("../common/SelectList"));
+var profileActions_1 = require("../../actions/profileActions");
+var react_router_dom_1 = require("react-router-dom");
 var CreateProfile = /** @class */ (function (_super) {
     __extends(CreateProfile, _super);
     function CreateProfile(props) {
@@ -56,9 +58,29 @@ var CreateProfile = /** @class */ (function (_super) {
     CreateProfile.prototype.handleSubmit = function (e) {
         e.preventDefault();
         console.log("submit");
+        // const getKeyValue: any = <T extends object, U extends keyof T>(key: U) => (
+        //   obj: T
+        // ) => obj[key];
+        console.log("this.state :>> ", this.state);
+        var profileData = {};
+        var state = this.state;
+        for (var input in state) {
+            // console.log('getKeyValue(input)(this.state) :>> ', getKeyValue(input)(this.state));
+            console.log("this.state[input] :>> ", state[input]);
+            if (!state[input] ||
+                input === "errors" ||
+                input === "displaySocialInputs" ||
+                input === "profile") {
+                continue;
+            }
+            else {
+                profileData[input] = state[input];
+            }
+        }
+        console.log("profileData :>> ", profileData);
+        this.props.createProfile(profileData, this.props.history);
     };
     CreateProfile.prototype.toggleSocialNetworks = function () {
-        console.log("this.state :>> ", this.state);
         this.setState(function (prev) { return ({
             displaySocialInputs: !prev.displaySocialInputs,
         }); });
@@ -67,8 +89,14 @@ var CreateProfile = /** @class */ (function (_super) {
         var _a;
         this.setState((_a = {}, _a[e.target.name] = e.target.value, _a));
     };
+    CreateProfile.prototype.componentWillReceiveProps = function (nextProps) {
+        if (nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
+        }
+    };
     CreateProfile.prototype.render = function () {
         var _a = this.state, errors = _a.errors, displaySocialInputs = _a.displaySocialInputs;
+        // const { errors } = this.props;
         var socialNetworks = (react_1.default.createElement("div", null,
             react_1.default.createElement(Input_1.default, { placeholder: "Instagram URL", name: "instagram", icon: "fab fa-instagram", value: this.state.instagram, onChange: this.onChange, error: errors.instagram }),
             react_1.default.createElement(Input_1.default, { placeholder: "LinkedIn URL", name: "linkedIn", icon: "fab fa-linkedin", value: this.state.linkedIn, onChange: this.onChange, error: errors.linkedIn }),
@@ -131,4 +159,5 @@ var mapStateToProps = function (state) { return ({
     profile: state.profile,
     errors: state.errors,
 }); };
-exports.default = react_redux_1.connect(mapStateToProps)(CreateProfile);
+// withRouter?
+exports.default = react_redux_1.connect(mapStateToProps, { createProfile: profileActions_1.createProfile })(react_router_dom_1.withRouter(CreateProfile));

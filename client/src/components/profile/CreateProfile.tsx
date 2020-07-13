@@ -3,8 +3,10 @@ import { connect } from "react-redux";
 import profile from "../../reducers/profile";
 import TextField from "../common/TextField";
 import TextArea from "../common/TextArea";
-import SelectList from "../common/SelectList";
 import Input from "../common/Input";
+import SelectList from "../common/SelectList";
+import { createProfile } from "../../actions/profileActions";
+import { withRouter } from "react-router-dom";
 
 interface CreateProfileState {
   handle: string;
@@ -26,6 +28,8 @@ interface CreateProfileState {
 interface CreateProfileProps {
   profile: any;
   errors: any;
+  createProfile: any;
+  history?: any;
 }
 
 class CreateProfile extends Component<CreateProfileProps, CreateProfileState> {
@@ -55,10 +59,34 @@ class CreateProfile extends Component<CreateProfileProps, CreateProfileState> {
   handleSubmit(e: any) {
     e.preventDefault();
     console.log("submit");
+    // const getKeyValue: any = <T extends object, U extends keyof T>(key: U) => (
+    //   obj: T
+    // ) => obj[key];
+
+    console.log("this.state :>> ", this.state);
+    const profileData: any = {} as CreateProfileState;
+    const state: any = this.state;
+    for (const input in state) {
+      // console.log('getKeyValue(input)(this.state) :>> ', getKeyValue(input)(this.state));
+      console.log("this.state[input] :>> ", state[input]);
+      if (
+        !state[input] ||
+        input === "errors" ||
+        input === "displaySocialInputs" ||
+        input === "profile"
+      ) {
+        continue;
+      } else {
+        profileData[input] = state[input];
+      }
+    }
+
+    console.log("profileData :>> ", profileData);
+
+    this.props.createProfile(profileData, this.props.history);
   }
 
   toggleSocialNetworks() {
-    console.log("this.state :>> ", this.state);
     this.setState(prev => ({
       displaySocialInputs: !prev.displaySocialInputs,
     }));
@@ -68,8 +96,15 @@ class CreateProfile extends Component<CreateProfileProps, CreateProfileState> {
     this.setState({ [e.target.name]: e.target.value } as any);
   }
 
+  componentWillReceiveProps(nextProps: any) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   render() {
     const { errors, displaySocialInputs } = this.state;
+    // const { errors } = this.props;
 
     const socialNetworks = (
       <div>
@@ -235,4 +270,7 @@ const mapStateToProps = (state: CreateProfileState) => ({
   errors: state.errors,
 });
 
-export default connect(mapStateToProps)(CreateProfile);
+// withRouter?
+export default connect(mapStateToProps, { createProfile })(
+  withRouter(CreateProfile)
+);

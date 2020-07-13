@@ -88,7 +88,9 @@ router.get("/all", function (req, res) {
  */
 router.post("/", passport.authenticate("jwt", { session: false }), function (req, res) {
     var _a;
+    console.log("here");
     var _b = profile_1.default(req.body), errors = _b.errors, isValid = _b.isValid;
+    console.log('errors', errors);
     // Check valid
     if (!isValid) {
         return res.status(400).json(errors);

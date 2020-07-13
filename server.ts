@@ -10,7 +10,7 @@ const posts = require("./routes/api/posts");
 const passport = require("passport");
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const db = process.env.MONGO_URI;
