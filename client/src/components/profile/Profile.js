@@ -33,24 +33,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
-var react_router_dom_1 = require("react-router-dom");
-var Landing = /** @class */ (function (_super) {
-    __extends(Landing, _super);
-    function Landing() {
+var Profile = /** @class */ (function (_super) {
+    __extends(Profile, _super);
+    function Profile() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Landing.prototype.render = function () {
-        return (react_1.default.createElement("div", { className: "landing" },
-            react_1.default.createElement("div", { className: "dark-overlay landing-inner text-light" },
-                react_1.default.createElement("div", { className: "container" },
-                    react_1.default.createElement("div", { className: "row" },
-                        react_1.default.createElement("div", { className: "col-md-12 text-center" },
-                            react_1.default.createElement("h1", { className: "display-3 mb-4" }, "Devbook"),
-                            react_1.default.createElement("p", { className: "lead" }, "Create a profile, post on the discussion board, and get guidance and support from other developers."),
-                            react_1.default.createElement("hr", null),
-                            react_1.default.createElement(react_router_dom_1.Link, { to: "/register", className: "btn btn-lg btn-info mr-2" }, "Sign Up"),
-                            react_1.default.createElement(react_router_dom_1.Link, { to: "/login", className: "btn btn-lg btn-light" }, "Login")))))));
+    Profile.prototype.render = function () {
+        return (react_1.default.createElement("div", null));
     };
-    return Landing;
+    return Profile;
 }(react_1.Component));
-exports.default = Landing;
+exports.default = Profile;

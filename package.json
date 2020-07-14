@@ -4,12 +4,11 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "client-install": "npm install --prefix client",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "start": "node server.js",
     "server": "nodemon --inspect server.js",
-    "tsc": "tsc"
+    "tsc": "tsc -w -jsx react"
   },
   "author": "Matt Taylor",
   "license": "MIT",
@@ -24,7 +23,6 @@
     "express": "^4.17.1",
     "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
-    "method-override": "^3.0.0",
     "mongoose": "^5.9.21",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",

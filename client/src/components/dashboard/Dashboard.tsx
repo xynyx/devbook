@@ -30,7 +30,13 @@ class Dashboard extends Component<DashboardInterface> {
       dashboardContent = <Spinner />;
       // If profile 'exists' but has no keys
     } else if (Object.keys(profile).length > 0) {
-      dashboardContent = <h4>TODO: show profile</h4>;
+      dashboardContent = (
+        <div>
+          <p className="lead text-muted">
+            Welcome <Link to={`/profile/${profile.handle}`}>{user.name}</Link>
+          </p>
+        </div>
+      );
     } else {
       // User has no profile
       dashboardContent = (
