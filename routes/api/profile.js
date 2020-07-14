@@ -24,10 +24,14 @@ router.get("/test", function (req, res) { return res.json({ msg: "Profile works"
  * Using JWT allows us not to have specify user Id (eg. api/profile/:id) -> receives JWT payload with user information instead
  */
 router.get("/", passport.authenticate("jwt", { session: false }), function (req, res) {
+    console.log("INSIDE GET");
+    console.log("req.user", req.user);
+    console.log("req.user.id", req.user.id);
     Profile_1.Profile.findOne({ user: req.user.id })
         // Populates name and avatar field (leaving out email) when finding this data, otherwise it won't be included
         .populate("user", ["name", "avatar"])
         .then(function (profile) {
+        // console.log("profile", profile);
         if (!profile) {
             return res.status(404).json({ noprofile: "No profile found" });
         }
@@ -88,21 +92,21 @@ router.get("/all", function (req, res) {
  */
 router.post("/", passport.authenticate("jwt", { session: false }), function (req, res) {
     var _a;
-    console.log("here");
+    console.log("herASDGDe");
     var _b = profile_1.default(req.body), errors = _b.errors, isValid = _b.isValid;
-    console.log('errors', errors);
+    console.log("errors", errors);
     // Check valid
     if (!isValid) {
         return res.status(400).json(errors);
     }
     var userInfo = req.body;
+    console.log("req.user", req.user);
+    console.log("USER BEFORE", userInfo);
+    //! USER IS MISSING FROM req.body?!
     // Convert comma separated values into array
     //! This may need fixing
     userInfo.skills = userInfo.skills.split(",");
     for (var property in userInfo) {
-        // Skip user key as that information is always required
-        if (property === "user")
-            continue;
         // If property is a social network, must build social key and add the property to social
         if (property === "twitter" ||
             property === "instagram" ||
@@ -116,12 +120,16 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
                 userInfo.social = (_a = {}, _a["" + property] = userInfo[property], _a);
             }
         }
-        // If the property hasn't been inputted by user (and isn't required), delete that key for the new userInfo object
-        if (!userInfo[property]) {
-            delete userInfo[property];
-        }
+        // // If the property hasn't been inputted by user (and isn't required), delete that key for the new userInfo object
+        // if (!userInfo[property]) {
+        //   delete userInfo[property];
+        // }
     }
+    userInfo.user = req.user;
+    // userInfo._id = req.user.id
+    console.log("userInfo AFTER", userInfo);
     Profile_1.Profile.findOne({ user: req.user.id }).then(function (profile) {
+        // console.log("profile", profile);
         // Update profile
         if (profile) {
             Profile_1.Profile.findOneAndUpdate({ user: req.user.id }, { $set: userInfo }, { new: true, useFindAndModify: true })
@@ -131,17 +139,25 @@ router.post("/", passport.authenticate("jwt", { session: false }), function (req
         else {
             // Create profile
             // Does 'handle' exist
+            console.log("HERE!");
             Profile_1.Profile.findOne({ handle: userInfo.handle })
                 .then(function (handle) {
+                console.log("handle", handle);
                 if (handle) {
                     return res
                         .status(400)
-                        .json({ exists: "That handle already exists." });
+                        .json({ error: "That handle already exists." });
                 }
                 else {
-                    new Profile_1.Profile(userInfo)
+                    console.log("nohandle");
+                    console.log("userInfo", userInfo);
+                    var newProfile = new Profile_1.Profile(userInfo);
+                    newProfile
                         .save()
-                        .then(function (profile) { return res.json(profile); })
+                        .then(function (profile) {
+                        console.log("profile", profile);
+                        res.json(profile);
+                    })
                         .catch(function (err) { return res.json(err); });
                 }
             })

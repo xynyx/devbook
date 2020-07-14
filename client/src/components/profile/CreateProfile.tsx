@@ -42,6 +42,7 @@ class CreateProfile extends Component<CreateProfileProps, CreateProfileState> {
       location: "",
       status: "",
       skills: "",
+      profile: {},
       githubUsername: "",
       bio: "",
       twitter: "",
@@ -66,6 +67,8 @@ class CreateProfile extends Component<CreateProfileProps, CreateProfileState> {
     console.log("this.state :>> ", this.state);
     const profileData: any = {} as CreateProfileState;
     const state: any = this.state;
+
+    console.log('state :>> ', state);
     for (const input in state) {
       // console.log('getKeyValue(input)(this.state) :>> ', getKeyValue(input)(this.state));
       console.log("this.state[input] :>> ", state[input]);

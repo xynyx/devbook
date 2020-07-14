@@ -8,10 +8,11 @@ var axios_1 = __importDefault(require("axios"));
 var types_1 = require("./types");
 // Get Profile
 exports.getCurrentProfile = function () { return function (dispatch) {
-    dispatch(exports.setProfileLoading());
+    // dispatch(setProfileLoading());
     axios_1.default
         .get("/api/profile")
         .then(function (res) {
+        console.log("RES?/* ? */");
         dispatch({
             type: types_1.SET_PROFILE,
             payload: res.data,
@@ -19,6 +20,7 @@ exports.getCurrentProfile = function () { return function (dispatch) {
     })
         // If there is no profile, set profile to empty object
         .catch(function () {
+        console.log("CATCH");
         dispatch({
             type: types_1.SET_PROFILE,
             payload: {},

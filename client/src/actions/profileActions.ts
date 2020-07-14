@@ -8,10 +8,11 @@ import {
 
 // Get Profile
 export const getCurrentProfile = () => (dispatch: any) => {
-  dispatch(setProfileLoading());
+  // dispatch(setProfileLoading());
   axios
     .get("/api/profile")
     .then(res => {
+      console.log("RES?/* ? */")
       dispatch({
         type: SET_PROFILE,
         payload: res.data,
@@ -19,6 +20,7 @@ export const getCurrentProfile = () => (dispatch: any) => {
     })
     // If there is no profile, set profile to empty object
     .catch(() => {
+      console.log("CATCH")
       dispatch({
         type: SET_PROFILE,
         payload: {},
@@ -55,6 +57,7 @@ export const createProfile = (profile: any, history: any) => (
     .post("/api/profile", profile)
     .then((res: any) => {
       console.log('res', res)
+
       history.push("/dashboard");
     })
     .catch((err: any) => {

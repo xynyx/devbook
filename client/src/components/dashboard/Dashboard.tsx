@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { getCurrentProfile } from "../../actions/profileActions";
 import { Auth } from "../../types";
 import Spinner from "../common/Spinner";
+import Profile from "../profile/Profile";
 
 interface DashboardInterface {
   getCurrentProfile(): any;
@@ -24,6 +25,7 @@ class Dashboard extends Component<DashboardInterface> {
   render() {
     const { user } = this.props.auth;
     const { profile, loading } = this.props.profile;
+    console.log('profile :>> ', profile);
 
     let dashboardContent;
     if (!profile || loading) {
@@ -33,8 +35,9 @@ class Dashboard extends Component<DashboardInterface> {
       dashboardContent = (
         <div>
           <p className="lead text-muted">
-            Welcome <Link to={`/profile/${profile.handle}`}>{user.name}</Link>
+            Welcome <Link to={`/profile/${profile.handle}`}>asd{user.name}</Link>
           </p>
+          <Profile />
         </div>
       );
     } else {

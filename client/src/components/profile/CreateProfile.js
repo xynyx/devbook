@@ -54,6 +54,7 @@ var CreateProfile = /** @class */ (function (_super) {
             location: "",
             status: "",
             skills: "",
+            profile: {},
             githubUsername: "",
             bio: "",
             twitter: "",
@@ -76,6 +77,7 @@ var CreateProfile = /** @class */ (function (_super) {
         console.log("this.state :>> ", this.state);
         var profileData = {};
         var state = this.state;
+        console.log('state :>> ', state);
         for (var input in state) {
             // console.log('getKeyValue(input)(this.state) :>> ', getKeyValue(input)(this.state));
             console.log("this.state[input] :>> ", state[input]);

@@ -25,10 +25,14 @@ router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req: any, res: any) => {
+    console.log("INSIDE GET");
+    console.log("req.user", req.user);
+    console.log("req.user.id", req.user.id);
     Profile.findOne({ user: req.user.id })
       // Populates name and avatar field (leaving out email) when finding this data, otherwise it won't be included
       .populate("user", ["name", "avatar"])
       .then((profile: any) => {
+        // console.log("profile", profile);
         if (!profile) {
           return res.status(404).json({ noprofile: "No profile found" });
         }
@@ -96,22 +100,22 @@ router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req: any, res: any) => {
-    console.log("here")
+    console.log("herASDGDe");
     const { errors, isValid } = validateProfileInput(req.body);
-    console.log('errors', errors)
+    console.log("errors", errors);
 
     // Check valid
     if (!isValid) {
       return res.status(400).json(errors);
     }
     const userInfo = req.body;
-
+    console.log("req.user", req.user);
+    console.log("USER BEFORE", userInfo);
+ //! USER IS MISSING FROM req.body?!
     // Convert comma separated values into array
     //! This may need fixing
     userInfo.skills = userInfo.skills.split(",");
     for (const property in userInfo) {
-      // Skip user key as that information is always required
-      if (property === "user") continue;
       // If property is a social network, must build social key and add the property to social
       if (
         property === "twitter" ||
@@ -126,13 +130,19 @@ router.post(
           userInfo.social = { [`${property}`]: userInfo[property] };
         }
       }
-      // If the property hasn't been inputted by user (and isn't required), delete that key for the new userInfo object
-      if (!userInfo[property]) {
-        delete userInfo[property];
-      }
+      // // If the property hasn't been inputted by user (and isn't required), delete that key for the new userInfo object
+      // if (!userInfo[property]) {
+      //   delete userInfo[property];
+      // }
     }
 
+    userInfo.user = req.user;
+    // userInfo._id = req.user.id
+
+    console.log("userInfo AFTER", userInfo);
+
     Profile.findOne({ user: req.user.id }).then((profile: any) => {
+      // console.log("profile", profile);
       // Update profile
       if (profile) {
         Profile.findOneAndUpdate(
@@ -145,16 +155,24 @@ router.post(
       } else {
         // Create profile
         // Does 'handle' exist
+        console.log("HERE!");
         Profile.findOne({ handle: userInfo.handle })
           .then((handle: any) => {
+            console.log("handle", handle);
             if (handle) {
               return res
                 .status(400)
-                .json({ exists: "That handle already exists." });
+                .json({ error: "That handle already exists." });
             } else {
-              new Profile(userInfo)
+              console.log("nohandle");
+              console.log("userInfo", userInfo);
+              const newProfile = new Profile(userInfo);
+              newProfile
                 .save()
-                .then((profile: any) => res.json(profile))
+                .then((profile: any) => {
+                  console.log("profile", profile);
+                  res.json(profile);
+                })
                 .catch((err: any) => res.json(err));
             }
           })

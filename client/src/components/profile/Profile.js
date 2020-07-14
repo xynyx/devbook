@@ -33,13 +33,23 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
+var react_router_dom_1 = require("react-router-dom");
 var Profile = /** @class */ (function (_super) {
     __extends(Profile, _super);
     function Profile() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Profile.prototype.render = function () {
-        return (react_1.default.createElement("div", null));
+        return (react_1.default.createElement("div", { className: "btn-group mb-4", role: "group" },
+            react_1.default.createElement(react_router_dom_1.Link, { to: "/edit-profile", className: "btn btn-light" },
+                react_1.default.createElement("i", { className: "fas fa-user-circle text-info mr-1" }),
+                " Edit Profile"),
+            react_1.default.createElement(react_router_dom_1.Link, { to: "/add-experience", className: "btn btn-light" },
+                react_1.default.createElement("i", { className: "fab fa-black-tie text-info mr-1" }),
+                "Add Experience"),
+            react_1.default.createElement(react_router_dom_1.Link, { to: "/add-education", className: "btn btn-light" },
+                react_1.default.createElement("i", { className: "fas fa-graduation-cap text-info mr-1" }),
+                "Add Education")));
     };
     return Profile;
 }(react_1.Component));
