@@ -40,7 +40,7 @@ var react_redux_1 = require("react-redux");
 var react_router_dom_1 = require("react-router-dom");
 var profileActions_1 = require("../../actions/profileActions");
 var Spinner_1 = __importDefault(require("../common/Spinner"));
-var Profile_1 = __importDefault(require("../profile/Profile"));
+var ProfileActions_1 = __importDefault(require("../profile/ProfileActions"));
 // interface ProfileInterface {
 // }
 var Dashboard = /** @class */ (function (_super) {
@@ -54,7 +54,7 @@ var Dashboard = /** @class */ (function (_super) {
     Dashboard.prototype.render = function () {
         var user = this.props.auth.user;
         var _a = this.props.profile, profile = _a.profile, loading = _a.loading;
-        console.log('profile :>> ', profile);
+        console.log("profile :>> ", profile);
         var dashboardContent;
         if (!profile || loading) {
             dashboardContent = react_1.default.createElement(Spinner_1.default, null);
@@ -63,11 +63,14 @@ var Dashboard = /** @class */ (function (_super) {
         else if (Object.keys(profile).length > 0) {
             dashboardContent = (react_1.default.createElement("div", null,
                 react_1.default.createElement("p", { className: "lead text-muted" },
-                    "Welcome ",
+                    "Welcome",
+                    " ",
                     react_1.default.createElement(react_router_dom_1.Link, { to: "/profile/" + profile.handle },
                         "asd",
                         user.name)),
-                react_1.default.createElement(Profile_1.default, null)));
+                react_1.default.createElement(ProfileActions_1.default, null),
+                react_1.default.createElement("br", null),
+                react_1.default.createElement("button", { className: "btn btn-danger" }, "Delete my Account")));
         }
         else {
             // User has no profile

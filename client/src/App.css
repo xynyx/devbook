@@ -34,7 +34,7 @@ img {
   height: 40px;
 }
 
-small, .invalid-feedback {
+small {
   font-size: 0.3em;
   text-align: left;
 }
